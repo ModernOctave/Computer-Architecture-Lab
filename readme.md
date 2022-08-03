@@ -1,1 +1,0 @@
-This repo contains my solution to the completed lab assignments for CS311: Computer Architecture Lab at the Indian Institue of Technology, Dharwad.
