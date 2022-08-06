@@ -15,7 +15,7 @@ public class Main {
         {
             border.runDutyCycle();
             border.updateView();
-            Integer[] Position = infil.NextMove();
+            Integer[] Position = infil.NextMove(border.neighbours_status, border.On_sensors);
             uniClock.incrimentTime(1); 
             border.moveIntruder(Position[0], Position[1]);
             uniClock.incrimentTime(9);   
