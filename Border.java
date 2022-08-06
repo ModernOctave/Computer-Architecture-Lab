@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+// import java.util.Arrays;
 
 public class Border {
     int width;
@@ -7,6 +8,8 @@ public class Border {
     boolean intruder_detected = false;
     boolean border_crossed = false;
     ArrayList<ArrayList<Sensor>> sensor_grid = new ArrayList<ArrayList<Sensor>>();
+    boolean[][] neighbours_status= {{false,false,false}, {false,false,false}, {false,false,false}};
+    boolean[][] On_sensors = {{false,false,false}, {false,false,false}, {false,false,false}};
 
     public Border(int width, double p) {
         this.width = width;
@@ -51,7 +54,7 @@ public class Border {
         }
 
         // Process move in x axis
-        if (x == -1) {
+        if (y == -1) {
             ArrayList<Sensor> sensors_row = new ArrayList<Sensor>();
             for (int j = 0; j < 3; j++) {
                 sensors_row.add(new Sensor(p));
@@ -59,7 +62,7 @@ public class Border {
             sensor_grid.add(0, sensors_row);
             sensor_grid.remove(3);
         }
-        else if (x == 1) {
+        else if (y == 1) {
             ArrayList<Sensor> sensors_row = new ArrayList<Sensor>();
             for (int j = 0; j < 3; j++) {
                 sensors_row.add(new Sensor(p));
@@ -69,13 +72,13 @@ public class Border {
         }
 
         // Process move in y axis
-        if (y == -1) {
+        if (x == -1) {
             for (int i = 0; i < 3; i++) {
                 sensor_grid.get(i).add(0, new Sensor(p));
                 sensor_grid.get(i).remove(3);
             }
         }
-        else if (y == 1) {
+        else if (x == 1) {
             for (int i = 0; i < 3; i++) {
                 sensor_grid.get(i).add(new Sensor(p));
                 sensor_grid.get(i).remove(0);
@@ -84,4 +87,20 @@ public class Border {
 
         return;
     }
+
+    public void updateView(){
+
+        for(int i=0; i<3; i++)
+        {
+            for(int j=0; j<3; j++)
+            {
+                neighbours_status[i][j] = (sensor_grid.get(i).get(j)).exists;
+                On_sensors[i][j] = sensor_grid.get(i).get(j).isOn;
+            }
+
+        }
+
+    }
+
+
 }

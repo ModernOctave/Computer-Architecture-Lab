@@ -1,6 +1,7 @@
 public class Sensor {
     double p;
     boolean isOn;
+    boolean exists;
 
     public Sensor(double p) {
         this.p = p;
