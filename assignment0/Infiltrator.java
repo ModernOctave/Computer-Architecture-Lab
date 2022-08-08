@@ -7,7 +7,7 @@ public class Infiltrator {
 
     public Integer[] NextMove(boolean[][] neighbours_status, boolean[][] On_sensors){
 
-        Integer[] Position = {1,1};
+        Integer[] Position = {0,0};
 
 
         ArrayList<Integer[]> available = new ArrayList<Integer[]>();
@@ -19,7 +19,7 @@ public class Infiltrator {
         }
 
 
-        if(!neighbours_status[0][0])
+        if(!neighbours_status[2][0])
         {
             Integer[] finalPos = {0,1};
 
@@ -30,7 +30,7 @@ public class Infiltrator {
         {
             for(int i=0; i<3; i++)
             {
-                if(!On_sensors[0][i])
+                if(!On_sensors[2][i])
                 {
                     Integer[] disp = {i-1, 1};
                     available.add(disp);  
@@ -41,7 +41,7 @@ public class Infiltrator {
             if(available.size() != 0)
             {
                 int min = 0;
-                int max = available.size();
+                int max = available.size()-1;
                 int rand_int = (int)Math.floor(Math.random()*(max-min+1) + min);  
                 return available.get(rand_int);
             }
@@ -49,9 +49,11 @@ public class Infiltrator {
 
             for(int i=0; i<3; i++)
             {
+                if(i==1)
+                    continue;
                 if(!On_sensors[1][i])
                 {
-                    Integer[] disp = {i-1, 1};
+                    Integer[] disp = {i-1, 0};
                     available.add(disp);
                 }
                 
@@ -60,7 +62,7 @@ public class Infiltrator {
             if(available.size() != 0)
             {
                 int min = 0;
-                int max = available.size();
+                int max = available.size()-1;
                 int rand_int = (int)Math.floor(Math.random()*(max-min+1) + min);  
                 return available.get(rand_int);
             }

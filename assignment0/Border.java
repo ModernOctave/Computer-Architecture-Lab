@@ -8,8 +8,8 @@ public class Border {
     boolean intruder_detected = false;
     boolean border_crossed = false;
     ArrayList<ArrayList<Sensor>> sensor_grid = new ArrayList<ArrayList<Sensor>>();
-    boolean[][] neighbours_status= {{false,false,false}, {false,false,false}, {false,false,false}};
-    boolean[][] On_sensors = {{false,false,false}, {false,false,false}, {false,false,false}};
+    boolean[][] neighbours_status= new boolean[3][3];
+    boolean[][] On_sensors = new boolean[3][3];
 
     public Border(int width, double p) {
         this.width = width;
@@ -18,7 +18,8 @@ public class Border {
         for (int i = 0; i < 3; i++) {
             ArrayList<Sensor> sensors_row = new ArrayList<Sensor>();
             for (int j = 0; j < 3; j++) {
-                sensors_row.add(new Sensor(p));
+                Boolean exists = (i == 0)? false : true;
+                sensors_row.add(new Sensor(p, exists));
             }
             sensor_grid.add(sensors_row);
         }
@@ -32,7 +33,22 @@ public class Border {
         }
     }
 
+    public void moveIntruder(int x, int y, boolean debug) {
+        if (debug) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    System.out.print(sensor_grid.get(j).get(i).isOn + " ");
+                }
+                System.out.println();
+            }
+            System.out.println("(x,y) = (" + x + "," + y + ")");
+        }
+
+        this.moveIntruder(x, y);
+    }
+
     public void moveIntruder(int x, int y) {
+
         if (Math.abs(x) > 1 || Math.abs(y) > 1) {
             System.out.println("[Error]: Invalid move by intruder!");
             return;
@@ -42,7 +58,7 @@ public class Border {
         }
 
         // Check if the intruder gets caught
-        if (sensor_grid.get(1).get(1).isOn || sensor_grid.get(1+x).get(1+y).isOn) {
+        if (sensor_grid.get(1).get(1).isOn || sensor_grid.get(1+y).get(1+x).isOn) {
             intruder_detected = true;
             return;
         }
@@ -53,11 +69,12 @@ public class Border {
             return;
         }
 
-        // Process move in x axis
+        // Process move in y axis
         if (y == -1) {
             ArrayList<Sensor> sensors_row = new ArrayList<Sensor>();
-            for (int j = 0; j < 3; j++) {
-                sensors_row.add(new Sensor(p));
+            for (int i = 0; i < 3; i++) {
+                Boolean exists = (intruder_progress < 3)? false : true;
+                sensors_row.add(new Sensor(p, exists));
             }
             sensor_grid.add(0, sensors_row);
             sensor_grid.remove(3);
@@ -65,25 +82,28 @@ public class Border {
         else if (y == 1) {
             ArrayList<Sensor> sensors_row = new ArrayList<Sensor>();
             for (int j = 0; j < 3; j++) {
-                sensors_row.add(new Sensor(p));
+                Boolean exists = (intruder_progress > width-2)? false : true;
+                sensors_row.add(new Sensor(p, exists));
             }
             sensor_grid.add(sensors_row);
             sensor_grid.remove(0);
         }
 
-        // Process move in y axis
+        // Process move in x axis
         if (x == -1) {
             for (int i = 0; i < 3; i++) {
-                sensor_grid.get(i).add(0, new Sensor(p));
+                sensor_grid.get(i).add(0, new Sensor(p, sensor_grid.get(i).get(1).exists));
                 sensor_grid.get(i).remove(3);
             }
         }
         else if (x == 1) {
             for (int i = 0; i < 3; i++) {
-                sensor_grid.get(i).add(new Sensor(p));
+                sensor_grid.get(i).add(new Sensor(p, sensor_grid.get(i).get(1).exists));
                 sensor_grid.get(i).remove(0);
             }
         }
+
+        intruder_progress += y;
 
         return;
     }
