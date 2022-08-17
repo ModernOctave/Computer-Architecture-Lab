@@ -3,4 +3,6 @@ a:
     10
     .text
 main:
-    store 
+    load %x0, $a, %x4
+    store %x4, 4, %x0
+    end

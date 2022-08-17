@@ -1,0 +1,10 @@
+x4 -> number
+x5 -> length of the number
+x10 -> indicator of palindrome
+x25 -> quotient of division
+x6 -> current remainder
+x7 -> current address for storing the digit
+x23 -> current address (backwards) while checking
+x20 -> length/2
+x11 -> upper digit
+x12 -> lower digit

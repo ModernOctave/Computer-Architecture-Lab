@@ -1,3 +1,27 @@
+x4 -> number
+x5 -> current address in memory to store the fibonacci number
+x6 -> constant 1
+x14 -> current sum
+x8, x9 -> previous two values
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 main:
     mov n, r1
     mov 2^16-1, r2
@@ -36,4 +60,6 @@ loop:
 
 done:
     end
+
+
 
