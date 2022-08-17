@@ -6,13 +6,17 @@ main:
     load %x0, $a, %x3
     addi %x0, 2, %x4
     addi %x0, 1, %x5
-    addi %x0, 3, %x7
-    blt %x3, %x7, break
+    addi %x0, 2, %x7
+    beq %x3, %x7, break
+    blt %x3, %x7, neither
 loop:
     div %x3, %x4, %x6
     bne %x31, 0, continue
 notprime:
     subi %x0, 1, %x5
+    jmp break
+neither:
+    addi %x0, 0, %x5
     jmp break
 continue:
     addi %x4, 1, %x4
