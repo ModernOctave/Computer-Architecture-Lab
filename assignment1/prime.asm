@@ -11,7 +11,7 @@ main:
     blt %x3, %x7, neither
 loop:
     div %x3, %x4, %x6
-    bne %x31, 0, continue
+    bne %x31, %x0, continue
 notprime:
     subi %x0, 1, %x5
     jmp break

@@ -9,7 +9,8 @@ main:
 	beq %x4, %x27, one
 	addi %x0, 2, %x30
 	beq %x4, %x30, two
-	bgt %x4, 2, more
+	addi %x0, 2, %28
+	bgt %x4, %28, more
 	end
 one:
 	store %x0, 0, %x5

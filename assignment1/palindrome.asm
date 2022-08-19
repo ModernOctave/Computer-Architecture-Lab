@@ -4,7 +4,8 @@ a:
 	.text
 main:
 	load %x0, $a, %x4
-	blt %x4, 10, zero
+	addi %x0, 10, %x27
+	blt %x4, %x27, zero
 	add %x0, %x0, %x5
 	addi %x0, 65535, %x7
 	jmp loop
