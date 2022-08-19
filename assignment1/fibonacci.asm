@@ -1,11 +1,12 @@
 	.data
-a:
+n:
 	10
 	.text
 main:
-	load %x0, $a, %x4
+	load %x0, $n, %x4
 	addi %x0, 65535, %x5
-	beq %x4, 1, one
+    addi %x0, 1, %x27
+	beq %x4, %x27, one
 	addi %x0, 2, %x30
 	beq %x4, %x30, two
 	bgt %x4, 2, more
