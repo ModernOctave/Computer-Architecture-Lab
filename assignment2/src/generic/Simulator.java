@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import generic.Instruction.OperationType;
 import generic.Operand.OperandType;
 
 
@@ -81,6 +82,9 @@ public class Simulator {
                         }
 
                         instructionString = opcode + rs1 + rs2 + rd;
+                        while(instructionString.length() < 32) {
+                            instructionString = "0" + instructionString;
+                        }
                         instructionInt = Integer.valueOf(instructionString, 2);
                         
                         break;
@@ -88,12 +92,90 @@ public class Simulator {
 
                     // R2I Format
                     case 2:
-                        // TODO Hrishikesh
 
-                    // R1 Format
+                        // Find rs1 string 
+                        Operand operand = instruction.getSourceOperand1();
+                        if (operand.getOperandType() != OperandType.Register) {
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R2I format instruction", i));
+                        }
+
+                        String rs1 = Integer.toBinaryString(instruction.getSourceOperand1().getValue());
+                        while (rs1.length() < 5) {
+                            rs1 = "0" + rs1;
+                        }
+
+                        // Find rd string
+                        operand = instruction.getDestinationOperand(); 
+                        if (operand.getOperandType() != OperandType.Register) {
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R2I format instruction", i));
+                        }
+                        String rd = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
+                        while (rd.length() < 5) {
+                            rd = "0" + rd;
+                        }
+
+                        // Find imm string
+                        Operand immediate = instruction.getSourceOperand2();
+                        if(immediate.getOperandType() != OperandType.Immediate) {
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate in R2I format instruction", i));
+                        }
+                        String imm = Integer.toBinaryString(instruction.getSourceOperand2().getValue());
+                        while (imm.length() < 17) {
+                            imm = "0" + imm;
+                        }
+
+                        instructionString = opcode + rs1 + rd + imm;
+                        instructionInt = Integer.valueOf(instructionString, 2);
+
+                    // RI Format
                     case 1:
-                        // TODO Hrishikesh
 
+                    if(instruction.getOperationType() == OperationType.jmp){
+
+                        String rd1 = "";
+                        String imm1 = "";
+                        operand = instruction.getDestinationOperand();
+                        if (operand.getOperandType() == OperandType.Register) {
+                        rd1 = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
+                            while (rd1.length() < 5) {
+                                rd1 = "0" + rd1;
+                            }
+                        
+                        imm1 = "";
+                            for (int k=0; k<22; k++){
+                                imm1 = imm1 + "0";
+                            }
+                        }
+
+                        else if(operand.getOperandType() == OperandType.Immediate)
+                        {
+                            imm1 = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
+                            while (imm1.length() < 22) {
+                                imm1 = "0" + imm1;
+                            }
+                            rd1 = "";
+                            for (int k=0; k<5; k++){
+                                rd1 = rd1 + "0";
+                            }
+                        }
+                        
+
+
+                        instructionString = opcode + rd1 + imm1;
+                        instructionInt = Integer.valueOf(instructionString, 2);
+
+                    } else {
+                        String rest = "";
+                        for(int j=0; j<27; j++) {
+                            rest = rest + '0';
+                        }
+                        instructionString = opcode + rest;
+                        instructionInt = Integer.valueOf(instructionString, 2);
+                    }
+                        
+
+
+                    
                     default: {
                         Misc.printErrorAndExit("[Assembly Error]: Invalid instruction type");
                     }
