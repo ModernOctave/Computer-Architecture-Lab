@@ -3,6 +3,9 @@ package generic;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.math.BigInteger;
+import java.util.Arrays;
 
 import generic.Instruction.OperationType;
 import generic.Operand.OperandType;
@@ -28,19 +31,19 @@ public class Simulator {
             FileOutputStream outputStream = new FileOutputStream(objectProgramFile);
 
             //2. write the firstCodeAddress to the file
-            outputStream.write(ParsedProgram.firstCodeAddress);
+            outputStream.write(to4ByteArray(ParsedProgram.firstCodeAddress));
 
             //3. write the data to the file
             for (int i = 0; i < ParsedProgram.data.size(); i++) {
-                outputStream.write(ParsedProgram.data.get(i));
+                outputStream.write(to4ByteArray(ParsedProgram.data.get(i)));
             }
 
             //4. assemble one instruction at a time, and write to the file
             for (int i = 0; i < ParsedProgram.code.size(); i++) {
                 Instruction instruction = ParsedProgram.code.get(i);
 
-                String instructionString;
-                Integer instructionInt = 0;
+                String instructionString = "";
+                Long instructionLong = 0L;
 
                 // Find opcode string
                 String opcode = Integer.toBinaryString(instruction.getOperationType().ordinal());
@@ -85,13 +88,13 @@ public class Simulator {
                         while(instructionString.length() < 32) {
                             instructionString = "0" + instructionString;
                         }
-                        instructionInt = Integer.valueOf(instructionString, 2);
+                        instructionLong = Long.parseLong(instructionString, 2);
                         
                         break;
                     }
 
                     // R2I Format
-                    case 2:
+                    case 2: {
 
                         // Find rs1 string 
                         Operand operand = instruction.getSourceOperand1();
@@ -125,7 +128,7 @@ public class Simulator {
                         }
 
                         else if(immediate.getOperandType() == OperandType.Label) {
-                            imm = Integer.toBinaryString(ParsedProgram.symtab.get(immediate.getValue()));
+                            imm = Integer.toBinaryString(ParsedProgram.symtab.get(immediate.getLabelValue()));
                             while (imm.length() < 17) {
                                 imm = "0" + imm;
                             }
@@ -137,63 +140,72 @@ public class Simulator {
                         
 
                         instructionString = opcode + rs1 + rd + imm;
-                        instructionInt = Integer.valueOf(instructionString, 2);
+                        instructionLong = Long.parseLong(instructionString, 2);
+
+                        break;
+                    }
 
                     // RI Format
-                    case 1:
+                    case 1: {
 
-                    if(instruction.getOperationType() == OperationType.jmp){
+                        Operand operand = instruction.getSourceOperand1();
+                        if(instruction.getOperationType() == OperationType.jmp) {
 
-                        String rd1 = "";
-                        String imm1 = "";
-                        operand = instruction.getDestinationOperand();
-                        if (operand.getOperandType() == OperandType.Register) {
-                        rd1 = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
-                            while (rd1.length() < 5) {
-                                rd1 = "0" + rd1;
+                            String rd1 = "";
+                            String imm1 = "";
+                            operand = instruction.getDestinationOperand();
+                            if (operand.getOperandType() == OperandType.Register) {
+                                rd1 = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
+                                    while (rd1.length() < 5) {
+                                        rd1 = "0" + rd1;
+                                    }
+                                
+                                imm1 = "";
+                                    for (int k=0; k<22; k++){
+                                        imm1 = imm1 + "0";
+                                    }
                             }
-                        
-                        imm1 = "";
-                            for (int k=0; k<22; k++){
-                                imm1 = imm1 + "0";
+
+                            else if(operand.getOperandType() == OperandType.Immediate)
+                            {
+                                imm1 = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
+                                while (imm1.length() < 22) {
+                                    imm1 = "0" + imm1;
+                                }
+                                rd1 = "";
+                                for (int k=0; k<5; k++){
+                                    rd1 = rd1 + "0";
+                                }
                             }
+                            
+
+
+                            instructionString = opcode + rd1 + imm1;
+                            instructionLong = Long.parseLong(instructionString, 2);
+
+                        } else {
+                            String rest = "";
+                            for(int j=0; j<27; j++) {
+                                rest = rest + '0';
+                            }
+                            instructionString = opcode + rest;
+                            instructionLong = Long.parseLong(instructionString, 2);
+
                         }
 
-                        else if(operand.getOperandType() == OperandType.Immediate)
-                        {
-                            imm1 = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
-                            while (imm1.length() < 22) {
-                                imm1 = "0" + imm1;
-                            }
-                            rd1 = "";
-                            for (int k=0; k<5; k++){
-                                rd1 = rd1 + "0";
-                            }
-                        }
-                        
-
-
-                        instructionString = opcode + rd1 + imm1;
-                        instructionInt = Integer.valueOf(instructionString, 2);
-
-                    } else {
-                        String rest = "";
-                        for(int j=0; j<27; j++) {
-                            rest = rest + '0';
-                        }
-                        instructionString = opcode + rest;
-                        instructionInt = Integer.valueOf(instructionString, 2);
+                        break;
                     }
                         
-
-
-                    
                     default: {
                         Misc.printErrorAndExit("[Assembly Error]: Invalid instruction type");
                     }
                 }
+                // Ensure instructionString is 32 bits
+                if (instructionString.length() != 32) {
+                    Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - instructionString is not 32 bits", i));
+                }
 
-                outputStream.write(instructionInt);
+                outputStream.write(to4ByteArray(instructionLong));
             }
 
             //5. close the file
@@ -248,4 +260,47 @@ public class Simulator {
         }
     }
 	
+    private static byte[] to4ByteArray(long value) {
+        byte[] bytes = new byte[4];
+        // Convert to byte array
+        byte[] rawBytes = BigInteger.valueOf(value).toByteArray();
+        // If rawBytes is longer than 4 bytes, then take the most significant 4 bytes
+        if (rawBytes.length >= 4) {
+            for (int i = 0; i < 4; i++) {
+                bytes[i] = rawBytes[i + rawBytes.length - 4];
+            }
+        }
+        // If rawBytes is less than 4 bytes, then pad the left with 0s
+        else if (rawBytes.length < 4) {
+            for (int i = 0; i < 4 - rawBytes.length; i++) {
+                bytes[i] = 0;
+            }
+            for (int i = 0; i < rawBytes.length; i++) {
+                bytes[i + 4 - rawBytes.length] = rawBytes[i];
+            }
+        }
+        return bytes;
+    }
+
+    private static byte[] to4ByteArray(int value) {
+        byte[] bytes = new byte[4];
+        // Convert to byte array
+        byte[] rawBytes = BigInteger.valueOf(value).toByteArray();
+        // If rawBytes is longer than 4 bytes, then take the most significant 4 bytes
+        if (rawBytes.length >= 4) {
+            for (int i = 0; i < 4; i++) {
+                bytes[i] = rawBytes[i + rawBytes.length - 4];
+            }
+        }
+        // If rawBytes is less than 4 bytes, then pad the left with 0s
+        else if (rawBytes.length < 4) {
+            for (int i = 0; i < 4 - rawBytes.length; i++) {
+                bytes[i] = 0;
+            }
+            for (int i = 0; i < rawBytes.length; i++) {
+                bytes[i + 4 - rawBytes.length] = rawBytes[i];
+            }
+        }
+        return bytes;
+    }
 }
