@@ -109,22 +109,34 @@ public class Simulator {
 
                         // Find rd string
                         operand = instruction.getDestinationOperand(); 
-                        if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R2I format instruction", i));
+                        String rd = "";
+                        if (operand.getOperandType() == OperandType.Label) {
+                            rd = Integer.toBinaryString(ParsedProgram.symtab.get(operand.getLabelValue()));
+                            while (rd.length() < 5) {
+                                rd = "0" + rd;
+                            }
                         }
-                        String rd = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
-                        while (rd.length() < 5) {
-                            rd = "0" + rd;
+
+                        else if(operand.getOperandType() == OperandType.Register)
+                        {
+                            rd = Integer.toBinaryString(instruction.getDestinationOperand().getValue());
+                            while (rd.length() < 5) {
+                                rd = "0" + rd;
+                            }
+                        }
+                        
+                        else {
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register or label in R2I format instruction", i));
                         }
 
                         // Find imm string
                         Operand immediate = instruction.getSourceOperand2();
                         String imm = "";
                         if(immediate.getOperandType() == OperandType.Immediate) {
-                            imm = Integer.toBinaryString(instruction.getSourceOperand2().getValue());
-                            while (imm.length() < 17) {
-                            imm = "0" + imm;
-                        }
+                                imm = Integer.toBinaryString(instruction.getSourceOperand2().getValue());
+                                while (imm.length() < 17) {
+                                imm = "0" + imm;
+                            }
                         }
 
                         else if(immediate.getOperandType() == OperandType.Label) {
