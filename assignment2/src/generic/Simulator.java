@@ -126,6 +126,9 @@ public class Simulator {
 
                         else if(immediate.getOperandType() == OperandType.Label) {
                             imm = Integer.toBinaryString(ParsedProgram.symtab.get(immediate.getValue()));
+                            while (imm.length() < 17) {
+                                imm = "0" + imm;
+                            }
                         }
 
                         else {
