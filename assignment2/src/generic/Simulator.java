@@ -116,13 +116,22 @@ public class Simulator {
 
                         // Find imm string
                         Operand immediate = instruction.getSourceOperand2();
-                        if(immediate.getOperandType() != OperandType.Immediate) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate in R2I format instruction", i));
-                        }
-                        String imm = Integer.toBinaryString(instruction.getSourceOperand2().getValue());
-                        while (imm.length() < 17) {
+                        String imm = "";
+                        if(immediate.getOperandType() == OperandType.Immediate) {
+                            imm = Integer.toBinaryString(instruction.getSourceOperand2().getValue());
+                            while (imm.length() < 17) {
                             imm = "0" + imm;
                         }
+                        }
+
+                        else if(immediate.getOperandType() == OperandType.Label) {
+                            imm = Integer.toBinaryString(ParsedProgram.symtab.get(immediate.getValue()));
+                        }
+
+                        else {
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i));
+                        }
+                        
 
                         instructionString = opcode + rs1 + rd + imm;
                         instructionInt = Integer.valueOf(instructionString, 2);
