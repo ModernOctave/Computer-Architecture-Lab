@@ -57,7 +57,7 @@ public class Simulator {
                         // Find rs1 string
                         Operand operand = instruction.getSourceOperand1();
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R3 format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R3 format instruction", i+1));
                         }
                         String rs1 = Integer.toBinaryString(operand.getValue());
                         while (rs1.length() < 5) {
@@ -67,7 +67,7 @@ public class Simulator {
                         // Find rs2 string
                         operand = instruction.getSourceOperand2();
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not a register in R3 format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not a register in R3 format instruction", i+1));
                         }
                         String rs2 = Integer.toBinaryString(operand.getValue());
                         while (rs2.length() < 5) {
@@ -77,7 +77,7 @@ public class Simulator {
                         // Find rd string
                         operand = instruction.getDestinationOperand();
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R3 format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R3 format instruction", i+1));
                         }
                         String rd = Integer.toBinaryString(operand.getValue());
                         while (rd.length() < 5) {
@@ -99,7 +99,7 @@ public class Simulator {
                         // Find rs1 string 
                         Operand operand = instruction.getSourceOperand1();
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R2I format instruction", i+1));
                         }
 
                         String rs1 = Integer.toBinaryString(operand.getValue());
@@ -111,7 +111,7 @@ public class Simulator {
                         operand = instruction.getDestinationOperand();
 
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R2I format instruction", i+1));
                         }
 
                         String rd = Integer.toBinaryString(operand.getValue());
@@ -123,7 +123,7 @@ public class Simulator {
                         operand = instruction.getSourceOperand2();
 
                         if (operand.getOperandType() != OperandType.Immediate) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate in R2I format instruction", i+1));
                         }
 
                         String imm = Integer.toBinaryString(operand.getValue());
@@ -143,7 +143,7 @@ public class Simulator {
                         // Find rs1 string 
                         Operand operand = instruction.getSourceOperand1();
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R2I format instruction", i+1));
                         }
 
                         String rs1 = Integer.toBinaryString(operand.getValue());
@@ -155,7 +155,7 @@ public class Simulator {
                         operand = instruction.getDestinationOperand();
 
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R2I format instruction", i+1));
                         }
 
                         String rd = Integer.toBinaryString(operand.getValue());
@@ -178,7 +178,7 @@ public class Simulator {
                                 imm = "0" + imm;
                             }
                         } else {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i+1));
                         }
 
                         instructionString = opcode + rs1 + rd + imm;
@@ -193,7 +193,7 @@ public class Simulator {
                         // Find rs1 string 
                         Operand operand = instruction.getSourceOperand1();
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 1 is not a register in R2I format instruction", i+1));
                         }
 
                         String rs1 = Integer.toBinaryString(operand.getValue());
@@ -205,7 +205,7 @@ public class Simulator {
                         operand = instruction.getSourceOperand2();
 
                         if (operand.getOperandType() != OperandType.Register) {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not a register in R2I format instruction", i+1));
                         }
 
                         String rd = Integer.toBinaryString(operand.getValue());
@@ -218,17 +218,23 @@ public class Simulator {
 
                         String imm = "";
                         if (operand.getOperandType() == OperandType.Immediate) {
-                            imm = Integer.toBinaryString(operand.getValue());
+                            imm = Integer.toBinaryString(Math.abs(i + 1 - operand.getValue()));
                             while (imm.length() < 17) {
                                 imm = "0" + imm;
+                            }
+                            if(i + 1 - operand.getValue() > 0) {
+                                imm = get2sComplementString(imm);
                             }
                         } else if (operand.getOperandType() == OperandType.Label) {
-                            imm = Integer.toBinaryString(ParsedProgram.symtab.get(operand.getLabelValue()));
+                            imm = Integer.toBinaryString(Math.abs(i + 1 - ParsedProgram.symtab.get(operand.getLabelValue())));
                             while (imm.length() < 17) {
                                 imm = "0" + imm;
                             }
+                            if(i + 1 - ParsedProgram.symtab.get(operand.getLabelValue()) > 0) {
+                                imm = get2sComplementString(imm);
+                            }
                         } else {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i+1));
                         }
 
                         instructionString = opcode + rs1 + rd + imm;
@@ -247,17 +253,23 @@ public class Simulator {
                         // Find imm string
                         String imm = "";
                         if (operand.getOperandType() == OperandType.Immediate) {
-                            imm = Integer.toBinaryString(operand.getValue());
+                            imm = Integer.toBinaryString(Math.abs(i + 1 - operand.getValue()));
                             while (imm.length() < 22) {
                                 imm = "0" + imm;
+                            }
+                            if(i + 1 - operand.getValue() > 0) {
+                                imm = get2sComplementString(imm);
                             }
                         } else if (operand.getOperandType() == OperandType.Label) {
-                            imm = Integer.toBinaryString(ParsedProgram.symtab.get(operand.getLabelValue()));
+                            imm = Integer.toBinaryString(Math.abs(i + 1 - ParsedProgram.symtab.get(operand.getLabelValue())));
                             while (imm.length() < 22) {
                                 imm = "0" + imm;
                             }
+                            if(i + 1 - ParsedProgram.symtab.get(operand.getLabelValue()) > 0) {
+                                imm = get2sComplementString(imm);
+                            }
                         } else {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i+1));
                         }
                         
 
@@ -283,7 +295,7 @@ public class Simulator {
                 }
                 // Ensure instructionString is 32 bits
                 if (instructionString.length() != 32) {
-                    Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - instructionString is not 32 bits", i));
+                    Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - instructionString is not 32 bits", i+1));
                 }
 
                 outputStream.write(to4ByteArray(instructionLong));
@@ -384,5 +396,23 @@ public class Simulator {
             }
         }
         return bytes;
+    }
+
+    private static String get2sComplementString(String binaryString) {
+        String result = "";
+        for (int i = 0; i < binaryString.length(); i++) {
+            if (binaryString.charAt(i) == '0') {
+                result = result + '1';
+            } else {
+                result = result + '0';
+            }
+        }
+        int value = Integer.parseInt(result, 2);
+        value = value + 1;
+        result = Integer.toBinaryString(value);
+        while (result.length() < 17) {
+            result = "0" + result;
+        }
+        return result;
     }
 }
