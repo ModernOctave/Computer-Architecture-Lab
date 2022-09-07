@@ -124,30 +124,30 @@ public class Simulator {
                                 rd = "0" + rd;
                             }
                         }
-                        
+
                         else {
                             Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Destination operand is not a register or label in R2I format instruction", i));
                         }
 
-                        // Find imm string
-                        Operand immediate = instruction.getSourceOperand2();
+                        // Find rs2 string
+                        Operand rs2 = instruction.getSourceOperand2();
                         String imm = "";
-                        if(immediate.getOperandType() == OperandType.Immediate) {
+                        if(rs2.getOperandType() == OperandType.Immediate) {
                                 imm = Integer.toBinaryString(instruction.getSourceOperand2().getValue());
                                 while (imm.length() < 17) {
                                 imm = "0" + imm;
                             }
                         }
 
-                        else if(immediate.getOperandType() == OperandType.Label) {
-                            imm = Integer.toBinaryString(ParsedProgram.symtab.get(immediate.getLabelValue()));
+                        else if(rs2.getOperandType() == OperandType.Register) {
+                            imm = Integer.toBinaryString(instruction.getSourceOperand2().getValue());
                             while (imm.length() < 17) {
                                 imm = "0" + imm;
                             }
                         }
 
                         else {
-                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or label in R2I format instruction", i));
+                            Misc.printErrorAndExit(String.format("[Assembly Error]: Line %d - Source operand 2 is not an immediate or register in R2I format instruction", i));
                         }
                         
 
