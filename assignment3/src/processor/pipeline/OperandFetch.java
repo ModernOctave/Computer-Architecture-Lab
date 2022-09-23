@@ -52,6 +52,7 @@ public class OperandFetch {
 			OF_EX_Latch.setBranchTarget(branchTarget);
 			OF_EX_Latch.setOp1(op1);
 			OF_EX_Latch.setOp2(op2);
+			OF_EX_Latch.setPc(IF_OF_Latch.getPc());
 
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
