@@ -24,73 +24,74 @@ public class Execute {
 			int imm = OF_EX_Latch.getImm();
 			int op1 = OF_EX_Latch.getOp1();
 			int op2 = OF_EX_Latch.getOp2();
-			int aluResult = 0;
+			long _aluResult = 0;
 			int pc = OF_EX_Latch.getPc();
 			int r31 = 0;
+			int remainder = -1;
 
 			
 			switch(opcode)
 			{
-				case 0: aluResult = op1 + op2;
+				case 0: _aluResult = (long)op1 + op2;
 						break;
-				case 1: aluResult = op1 + imm;
+				case 1: _aluResult = (long)op1 + imm;
 						break;
-				case 2: aluResult = op1 - op2;
+				case 2: _aluResult = (long)op1 - op2;
 						break;
-				case 3: aluResult = op1 - imm;
+				case 3: _aluResult = (long)op1 - imm;
 						break;
-				case 4: aluResult = op1 * op2;
+				case 4: _aluResult = (long)op1 * op2;
 						break;
-				case 5: aluResult = op1 * imm;
+				case 5: _aluResult = (long)op1 * imm;
 						break;
-				case 6: aluResult = op1 / op2;
-						r31 = op1 % op2;
+				case 6: _aluResult = (long)op1 / op2;
+						remainder = op1 % op2;
 						break;
-				case 7: aluResult = op1 / imm;
-						r31 = op1 % imm;
+				case 7: _aluResult = (long)op1 / imm;
+						remainder = op1 % imm;
 						break;
-				case 8: aluResult = op1 & op2;
+				case 8: _aluResult = (long)op1 & op2;
 						break;
-				case 9: aluResult = op1 & imm;
+				case 9: _aluResult = (long)op1 & imm;
 						break;
-				case 10: aluResult = op1 | op2;
+				case 10: _aluResult = (long)op1 | op2;
 						break;
-				case 11: aluResult = op1 | imm;
+				case 11: _aluResult = (long)op1 | imm;
 						break;
-				case 12: aluResult = op1 ^ op2;
+				case 12: _aluResult = (long)op1 ^ op2;
 						break;
-				case 13: aluResult = op1 ^ imm;
+				case 13: _aluResult = (long)op1 ^ imm;
 						break;
 				case 14: if(op1 < op2)
-							aluResult = 1;
+							_aluResult = 1;
 						else
-							aluResult = 0;
+							_aluResult = 0;
 						break;
 				case 15: if(op1 < imm)
-							aluResult = 1;
+							_aluResult = 1;
 						else
-							aluResult = 0;
+							_aluResult = 0;
 						break;
 
-				case 16: aluResult = op1 << op2;
+				case 16: _aluResult = (long)op1 << op2;
 						break;
-				case 17: aluResult = op1 << imm;
+				case 17: _aluResult = (long)op1 << imm;
 						break;
-				case 18: aluResult = op1 >> op2;
+				case 18: _aluResult = (long)op1 >> op2;
 						break;
-				case 19: aluResult = op1 >> imm;
+				case 19: _aluResult = (long)op1 >> imm;
 						break;
-				case 20: aluResult = op1 >>> op2;
+				case 20: _aluResult = (long)op1 >>> op2;
 						break;
-				case 21: aluResult = op1 >>> imm;
+				case 21: _aluResult = (long)op1 >>> imm;
 						break;
 
 				// Memory Instructions
 
-				case 22: aluResult = op1 + imm;
+				case 22: _aluResult = (long)op1 + imm;
 						break;
 
-				case 23: aluResult = op2 + imm;
+				case 23: _aluResult = (long)op2 + imm;
 						break;
 
 				//Branch Unit
@@ -109,6 +110,16 @@ public class Execute {
 
 				case 28: containingProcessor.setIsBranchTaken(op1 > op2);
 						break;	
+			}
+
+			// Take only the lower 32 bits of the result
+			int aluResult = (int)_aluResult;
+			// Put overflow into r31
+			r31 = (int)(_aluResult >> 32);
+			// Put remainder into r31
+			if(remainder != -1)
+			{
+				r31 = remainder;
 			}
 
 			EX_MA_Latch.setAluResult(aluResult);
