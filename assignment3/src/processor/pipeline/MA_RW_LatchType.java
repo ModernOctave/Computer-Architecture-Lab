@@ -8,7 +8,7 @@ public class MA_RW_LatchType {
 	int opcode = 0;
 	int pc = 0;
 	int rd = 0;
-
+	int r31;
 	
 	public MA_RW_LatchType()
 	{
@@ -23,7 +23,7 @@ public class MA_RW_LatchType {
 		RW_enable = rW_enable;
 	}
 
-	public int getLoadResult() {
+	public int getLdResult() {
 		return ldResult;
 	}
 
@@ -63,6 +63,12 @@ public class MA_RW_LatchType {
 		this.rd = rd;
 	}
 
+	public int getR31() {
+		return r31;
+	}
 
+	public void setR31(int r31) {
+		this.r31 = r31;
+	}
 
 }

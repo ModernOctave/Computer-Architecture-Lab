@@ -40,6 +40,8 @@ public class MemoryAccess {
 			MA_RW_Latch.setAluResult(EX_MA_Latch.getAluResult());
 			MA_RW_Latch.setOpcode(opcode);
 			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
+			MA_RW_Latch.setR31(EX_MA_Latch.getR31());
+			// System.out.println("rd in MA: " + EX_MA_Latch.getRd());
 
 			// Set RW_enable
 			EX_MA_Latch.setMA_enable(false);

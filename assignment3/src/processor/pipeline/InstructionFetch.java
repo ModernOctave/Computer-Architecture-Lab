@@ -22,26 +22,22 @@ public class InstructionFetch {
 	{
 		if(IF_EnableLatch.isIF_enable())
 		{
-			// Update PC
-			if(containingProcessor.getIsBranchTaken())
-			{
-				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
-			}
-			else
-			{
-				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter());
-			}
-
 			// IF stage
 			int PC = containingProcessor.getRegisterFile().getProgramCounter();
 			IF_OF_Latch.setPc(PC);
 			int instruction = containingProcessor.getMainMemory().getWord(PC);
 			IF_OF_Latch.setInstruction(instruction);
 
-			// Handle end instruction
-			if(instruction == 29)
+			// Update PC
+			if(containingProcessor.getIsBranchTaken())
 			{
-				Simulator.setSimulationComplete(true);	
+				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
+				containingProcessor.setIsBranchTaken(false);
+			}
+			else
+			{
+				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
+				// System.out.println("PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
 			}
 			
 			// Set OF_enable

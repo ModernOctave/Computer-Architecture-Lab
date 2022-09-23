@@ -26,6 +26,7 @@ public class Execute {
 			int op2 = OF_EX_Latch.getOp2();
 			int aluResult = 0;
 			int pc = OF_EX_Latch.getPc();
+			int r31 = 0;
 
 			
 			switch(opcode)
@@ -43,8 +44,10 @@ public class Execute {
 				case 5: aluResult = op1 * imm;
 						break;
 				case 6: aluResult = op1 / op2;
+						r31 = op1 % op2;
 						break;
 				case 7: aluResult = op1 / imm;
+						r31 = op1 % imm;
 						break;
 				case 8: aluResult = op1 & op2;
 						break;
@@ -82,21 +85,29 @@ public class Execute {
 				case 21: aluResult = op1 >>> imm;
 						break;
 
+				// Memory Instructions
+
+				case 22: aluResult = op1 + imm;
+						break;
+
+				case 23: aluResult = op2 + imm;
+						break;
+
 				//Branch Unit
 
-				case 22: containingProcessor.setIsBranchTaken(true);
+				case 24: containingProcessor.setIsBranchTaken(true);
 						break;
 
-				case 23: containingProcessor.setIsBranchTaken(op1 == op2);
+				case 25: containingProcessor.setIsBranchTaken(op1 == op2);
 						break;
 				
-				case 24: containingProcessor.setIsBranchTaken(op1 != op2);
+				case 26: containingProcessor.setIsBranchTaken(op1 != op2);
 						break;
 				
-				case 25: containingProcessor.setIsBranchTaken(op1 < op2);
+				case 27: containingProcessor.setIsBranchTaken(op1 < op2);
 						break;
 
-				case 26: containingProcessor.setIsBranchTaken(op1 > op2);
+				case 28: containingProcessor.setIsBranchTaken(op1 > op2);
 						break;	
 			}
 
@@ -104,6 +115,8 @@ public class Execute {
 			EX_MA_Latch.setOpcode(opcode);
 			EX_MA_Latch.setOp1(op1);
 			EX_MA_Latch.setPc(pc);
+			EX_MA_Latch.setRd(OF_EX_Latch.getRd());
+			EX_MA_Latch.setR31(r31);
 			OF_EX_Latch.setEX_enable(false);
 			EX_MA_Latch.setMA_enable(true);
 		}

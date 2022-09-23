@@ -42,7 +42,8 @@ public class Simulator {
 			processor.getRegisterFile().setValue(2, 65535);
 			int i = 0;
 			while(file.read(b) != -1) {
-				processor.getMainMemory().setWord(i, new BigInteger(b).intValue());
+				int val = new BigInteger(b).intValue();
+				processor.getMainMemory().setWord(i, val);
 				i++;
 			}
 			file.close();

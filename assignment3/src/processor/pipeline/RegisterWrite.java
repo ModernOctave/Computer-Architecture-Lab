@@ -26,14 +26,25 @@ public class RegisterWrite {
 
 			// if instruction being processed is a branch instruction, remember to set the PC of the processor
 
-			if(MA_RW_Latch.opcode>=0 && MA_RW_Latch.opcode <=21)
+			int opcode = MA_RW_Latch.getOpcode();
+			int rd = MA_RW_Latch.getRd();
+			int aluResult = MA_RW_Latch.getAluResult();
+			int ldResult = MA_RW_Latch.getLdResult();
+
+			if(opcode>=0 && opcode <=21)
 			{
-				containingProcessor.getRegisterFile().setValue(MA_RW_Latch.rd, MA_RW_Latch.aluResult);
+				containingProcessor.getRegisterFile().setValue(rd, aluResult);
 			}
 			
-			if(MA_RW_Latch.opcode == 22)
+			if(opcode == 22)
 			{
-				containingProcessor.getRegisterFile().setValue(MA_RW_Latch.rd, MA_RW_Latch.ldResult);
+				containingProcessor.getRegisterFile().setValue(rd, ldResult);
+				// System.out.println("Load result: " + ldResult + " written to register " + rd);
+			}
+
+			if(opcode >= 6 && opcode <= 7)
+			{
+				containingProcessor.getRegisterFile().setValue(31, MA_RW_Latch.getR31());
 			}
 			
 			MA_RW_Latch.setRW_enable(false);

@@ -1,5 +1,7 @@
 package processor.pipeline;
 
+import generic.Misc;
+import generic.Simulator;
 import processor.Processor;
 
 public class OperandFetch {
@@ -23,46 +25,74 @@ public class OperandFetch {
 			{
 				binaryInstruction = "0" + binaryInstruction;
 			}
+			// System.out.println("Instruction: " + binaryInstruction);
 
 			// OF stage
 			// opcode
-			int opcode = Integer.parseInt(binaryInstruction.substring(0, 4), 2);
+			int opcode = Integer.parseInt(binaryInstruction.substring(0, 5), 2);
+
+			// Handle end instruction
+			if(opcode == 29)
+			{
+				Simulator.setSimulationComplete(true);
+			}
 
 			// imm
-			int imm = Integer.parseInt(binaryInstruction.substring(15, 31), 2);
+			int imm = Misc.getIntFromBinaryString(binaryInstruction.substring(15, 32));
 
 			// branchPC
 			int branchPC;
 			if(opcode != 24)
 			{
 				// R2I
-				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(binaryInstruction.substring(15, 31), 2);
+				int Imm = Misc.getIntFromBinaryString(binaryInstruction.substring(15, 32));
+				branchPC = IF_OF_Latch.getPc()+Imm;
 			}
 			else
 			{
 				// RI
-				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(binaryInstruction.substring(5, 9), 2)+Integer.parseInt(binaryInstruction.substring(10, 31), 2);
+				Integer rd = Integer.parseInt(binaryInstruction.substring(5, 10), 2);
+				Integer Imm = Misc.getIntFromBinaryString(binaryInstruction.substring(10, 32));
+				branchPC = IF_OF_Latch.getPc()+rd+Imm;
+				// System.out.println("jmp rd: " + rd);
+				// System.out.println("jmp imm: " + Imm);
+				// System.out.println("jmp imm: " + branchPC);
 			}
 
 			// op1
-			int rs1 = Integer.parseInt(binaryInstruction.substring(5, 9), 2);
+			int rs1 = Integer.parseInt(binaryInstruction.substring(5, 10), 2);
 			int op1 = containingProcessor.getRegisterFile().getValue(rs1);
 
 			// op2
-			int rs2 = Integer.parseInt(binaryInstruction.substring(10, 14), 2);
+			int rs2 = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
 			int op2 = containingProcessor.getRegisterFile().getValue(rs2);
 
 			// rd
 			int rd;
-			if(opcode != 22)
+			if(opcode <= 21 && opcode%2 == 0)
 			{
-				// Arithematic
-				rd = Integer.parseInt(binaryInstruction.substring(15, 19), 2);
+				// R3 Type
+				rd = Integer.parseInt(binaryInstruction.substring(15, 20), 2);
+			}
+			else if(opcode <= 21 && opcode%2 == 1)
+			{
+				// R2I Type
+				rd = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
+			}
+			else if(opcode >= 22 && opcode <= 23)
+			{
+				// R2I Type
+				rd = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
+			}
+			else if(opcode == 24)
+			{
+				// RI
+				rd = Integer.parseInt(binaryInstruction.substring(5, 10), 2);
 			}
 			else
 			{
-				// load
-				rd = Integer.parseInt(binaryInstruction.substring(10, 14), 2);
+				// R1I
+				rd = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
 			}
 			
 			// Set in latch
@@ -79,6 +109,21 @@ public class OperandFetch {
 			// Set EX_enable
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
+
+			// System.out.println("Opcode: " + opcode);
+			// System.out.println("Imm: " + imm);
+			// System.out.println("Rs1: " + rs1);
+			// System.out.println("Rs2: " + rs2);
+			// System.out.println("Rd: " + rd);
+			// System.out.println("Op1: " + op1);
+			// System.out.println("Op2: " + op2);
+			// System.out.println("PC: " + IF_OF_Latch.getPc());
+			// System.out.println("BranchPC: " + branchPC);
+
+			// if(IF_OF_Latch.getPc() > 29)
+			// {
+			// 	Misc.printErrorAndExit("PC out of bounds");
+			// }
 		}
 	}
 
