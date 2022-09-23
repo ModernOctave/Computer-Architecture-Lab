@@ -47,15 +47,16 @@ public class OperandFetch {
 			int op2 = containingProcessor.getRegisterFile().getValue(rs2);
 
 			// rd
+			int rd;
 			if(opcode != 22)
 			{
 				// Arithematic
-				int rd = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 19), 2);
+				rd = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 19), 2);
 			}
 			else
 			{
 				// load
-				int rd = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 14), 2);
+				rd = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 14), 2);
 			}
 			
 			// Set in latch
