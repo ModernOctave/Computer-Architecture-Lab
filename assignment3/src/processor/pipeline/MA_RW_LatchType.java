@@ -3,7 +3,7 @@ package processor.pipeline;
 public class MA_RW_LatchType {
 	
 	boolean RW_enable;
-	int loadResult = 0;
+	int ldResult = 0;
 	int aluResult = 0;
 	int opcode = 0;
 	int pc = 0;
@@ -24,11 +24,11 @@ public class MA_RW_LatchType {
 	}
 
 	public int getLoadResult() {
-		return loadResult;
+		return ldResult;
 	}
 
-	public void setLoadResult(int loadResult) {
-		this.loadResult = loadResult;
+	public void setLdResult(int ldResult) {
+		this.ldResult = ldResult;
 	}
 
 	public int getAluResult() {

@@ -25,7 +25,7 @@ public class MemoryAccess {
 				// load
 				int address = EX_MA_Latch.getAluResult();
 				int data = containingProcessor.getMainMemory().getWord(address);
-				MA_RW_Latch.setLdValue(data);
+				MA_RW_Latch.setLdResult(data);
 			}
 			else if(opcode == 23)
 			{

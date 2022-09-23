@@ -37,7 +37,7 @@ public class RegisterWrite {
 			
 			if(MA_RW_Latch.opcode == 22)
 			{
-				containingProcessor.getRegisterFile().setValue(MA_RW_Latch.rd, MA_RW_Latch.loadResult);
+				containingProcessor.getRegisterFile().setValue(MA_RW_Latch.rd, MA_RW_Latch.ldResult);
 			}
 
 			
