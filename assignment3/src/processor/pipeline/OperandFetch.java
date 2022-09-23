@@ -35,7 +35,7 @@ public class OperandFetch {
 			else
 			{
 				// RI
-				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 31), 2);
+				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(5, 9), 2)+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 31), 2);
 			}
 
 			// op1
