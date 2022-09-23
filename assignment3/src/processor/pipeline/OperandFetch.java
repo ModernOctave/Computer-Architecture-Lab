@@ -18,32 +18,38 @@ public class OperandFetch {
 	{
 		if(IF_OF_Latch.isOF_enable())
 		{
+			String binaryInstruction = Integer.toBinaryString(IF_OF_Latch.getInstruction());
+			while(binaryInstruction.length() < 32)
+			{
+				binaryInstruction = "0" + binaryInstruction;
+			}
+
 			// OF stage
 			// opcode
-			int opcode = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(0, 4), 2);
+			int opcode = Integer.parseInt(binaryInstruction.substring(0, 4), 2);
 
 			// imm
-			int imm = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 31), 2);
+			int imm = Integer.parseInt(binaryInstruction.substring(15, 31), 2);
 
 			// branchPC
 			int branchPC;
 			if(opcode != 24)
 			{
 				// R2I
-				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 31), 2);
+				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(binaryInstruction.substring(15, 31), 2);
 			}
 			else
 			{
 				// RI
-				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(5, 9), 2)+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 31), 2);
+				branchPC = IF_OF_Latch.getPc()+Integer.parseInt(binaryInstruction.substring(5, 9), 2)+Integer.parseInt(binaryInstruction.substring(10, 31), 2);
 			}
 
 			// op1
-			int rs1 = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(5, 9), 2);
+			int rs1 = Integer.parseInt(binaryInstruction.substring(5, 9), 2);
 			int op1 = containingProcessor.getRegisterFile().getValue(rs1);
 
 			// op2
-			int rs2 = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 14), 2);
+			int rs2 = Integer.parseInt(binaryInstruction.substring(10, 14), 2);
 			int op2 = containingProcessor.getRegisterFile().getValue(rs2);
 
 			// rd
@@ -51,12 +57,12 @@ public class OperandFetch {
 			if(opcode != 22)
 			{
 				// Arithematic
-				rd = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 19), 2);
+				rd = Integer.parseInt(binaryInstruction.substring(15, 19), 2);
 			}
 			else
 			{
 				// load
-				rd = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 14), 2);
+				rd = Integer.parseInt(binaryInstruction.substring(10, 14), 2);
 			}
 			
 			// Set in latch

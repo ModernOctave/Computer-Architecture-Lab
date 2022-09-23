@@ -1,6 +1,5 @@
 package processor.pipeline;
 
-import generic.Simulator;
 import processor.Processor;
 
 public class RegisterWrite {
@@ -18,11 +17,8 @@ public class RegisterWrite {
 	public void performRW()
 	{
 		if(MA_RW_Latch.isRW_enable())
-		{
-			//TODO
-			
+		{	
 			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
-			
 			
 			// if instruction being processed is a load instruction, remember to set the corresponding register in the register file
 
@@ -39,7 +35,6 @@ public class RegisterWrite {
 			{
 				containingProcessor.getRegisterFile().setValue(MA_RW_Latch.rd, MA_RW_Latch.ldResult);
 			}
-
 			
 			MA_RW_Latch.setRW_enable(false);
 			IF_EnableLatch.setIF_enable(true);

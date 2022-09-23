@@ -18,7 +18,6 @@ public class Execute {
 	
 	public void performEX()
 	{
-		//TODO
 		if(OF_EX_Latch.isEX_enable())
 		{
 			int opcode = OF_EX_Latch.getOpcode();
@@ -98,14 +97,8 @@ public class Execute {
 						break;
 
 				case 26: containingProcessor.setIsBranchTaken(op1 > op2);
-						break;
-
-					
-	}
-
-
-
-
+						break;	
+			}
 
 			EX_MA_Latch.setAluResult(aluResult);
 			EX_MA_Latch.setOpcode(opcode);
@@ -115,8 +108,5 @@ public class Execute {
 			EX_MA_Latch.setMA_enable(true);
 		}
 	}
-
-
-
 }
 
