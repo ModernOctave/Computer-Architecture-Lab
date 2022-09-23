@@ -102,17 +102,15 @@ public class OperandFetch {
 
 			if(Simulator.isDebugMode())
 			{	
-				System.out.println();
-				System.out.println("PC: " + IF_OF_Latch.getPc());
-				System.out.println("Opcode: " + opcode);
-				System.out.println("Imm: " + imm);
-				System.out.println("Rs1: " + rs1);
-				System.out.println("Rs2: " + rs2);
-				System.out.println("Rd: " + rd);
-				System.out.println("Op1: " + op1);
-				System.out.println("Op2: " + op2);
-				System.out.println("PC: " + IF_OF_Latch.getPc());
-				System.out.println("BranchPC: " + branchPC);
+				System.out.println("[Debug] (OF) PC: " + IF_OF_Latch.getPc());
+				System.out.println("[Debug] (OF) Opcode: " + opcode);
+				System.out.println("[Debug] (OF) Rs1: " + rs1);
+				System.out.println("[Debug] (OF) Rs2: " + rs2);
+				System.out.println("[Debug] (OF) Rd: " + rd);
+				System.out.println("[Debug] (OF) Op1: " + op1);
+				System.out.println("[Debug] (OF) Op2: " + op2);
+				System.out.println("[Debug] (OF) Imm: " + imm);
+				System.out.println("[Debug] (OF) BranchPC: " + branchPC);
 			}
 		}
 	}

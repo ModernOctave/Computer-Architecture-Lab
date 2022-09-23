@@ -20,6 +20,11 @@ public class InstructionFetch {
 	
 	public void performIF()
 	{
+		if(Simulator.isDebugMode()) 
+		{
+			System.out.println();
+		}
+		
 		if(IF_EnableLatch.isIF_enable())
 		{
 			// Update PC

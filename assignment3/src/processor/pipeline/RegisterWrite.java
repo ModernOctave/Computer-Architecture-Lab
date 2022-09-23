@@ -35,17 +35,28 @@ public class RegisterWrite {
 			if(opcode>=0 && opcode <=21)
 			{
 				containingProcessor.getRegisterFile().setValue(rd, aluResult);
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (RW) Write to register " + rd + " data " + aluResult);
+				}
 			}
 			
 			if(opcode == 22)
 			{
 				containingProcessor.getRegisterFile().setValue(rd, ldResult);
-				// System.out.println("Load result: " + ldResult + " written to register " + rd);
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (RW) Write register " + rd + " to " + ldResult);
+				}
 			}
 
 			if(opcode >= 6 && opcode <= 7)
 			{
 				containingProcessor.getRegisterFile().setValue(31, MA_RW_Latch.getR31());
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (RW) Write to register 31 data " + MA_RW_Latch.getR31());
+				}
 			}
 
 			// Handle end instruction
@@ -53,6 +64,10 @@ public class RegisterWrite {
 			{
 				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
 				Simulator.setSimulationComplete(true);
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (RW) End instruction detected");
+				}
 			}
 			
 			MA_RW_Latch.setRW_enable(false);

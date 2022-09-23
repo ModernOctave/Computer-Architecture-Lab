@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import generic.Simulator;
 import processor.Processor;
 
 public class MemoryAccess {
@@ -26,6 +27,10 @@ public class MemoryAccess {
 				int address = EX_MA_Latch.getAluResult();
 				int data = containingProcessor.getMainMemory().getWord(address);
 				MA_RW_Latch.setLdResult(data);
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (MA) Load from address " + address + " data " + data);
+				}
 			}
 			else if(opcode == 23)
 			{
@@ -33,6 +38,10 @@ public class MemoryAccess {
 				int data = EX_MA_Latch.getOp1();
 				int address = EX_MA_Latch.getAluResult();
 				containingProcessor.getMainMemory().setWord(address, data);
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (MA) Store to address " + address + " data " + data);
+				}
 			}
 
 			// Set the values in MA_RW_Latch
@@ -41,7 +50,6 @@ public class MemoryAccess {
 			MA_RW_Latch.setOpcode(opcode);
 			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
 			MA_RW_Latch.setR31(EX_MA_Latch.getR31());
-			// System.out.println("rd in MA: " + EX_MA_Latch.getRd());
 
 			// Set RW_enable
 			EX_MA_Latch.setMA_enable(false);

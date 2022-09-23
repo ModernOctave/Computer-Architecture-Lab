@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import generic.Simulator;
 import processor.Processor;
 
 public class Execute {
@@ -120,6 +121,13 @@ public class Execute {
 			if(remainder != -1)
 			{
 				r31 = remainder;
+			}
+
+			if(Simulator.isDebugMode())
+			{
+				System.out.println("[Debug] (EX) ALU Result: " + aluResult);
+				System.out.println("[Debug] (EX) r31: " + r31);
+				System.out.println("[Debug] (EX) isBranchTaken: " + containingProcessor.getIsBranchTaken());
 			}
 
 			EX_MA_Latch.setAluResult(aluResult);
