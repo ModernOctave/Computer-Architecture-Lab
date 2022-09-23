@@ -5,8 +5,6 @@ public class OF_EX_LatchType {
 	boolean EX_enable;
 	int opcode;
 	int imm;
-	int aluResult;
-	int result;
 	int op1;
 	int op2;
 	int pc;
@@ -42,14 +40,6 @@ public class OF_EX_LatchType {
 		return op2;
 	}
 
-	public int getAluResult() {
-		return aluResult;
-	}
-
-	public int getResult() {
-		return result;
-	}
-
 	public int getPc() {
 		return pc;
 	}
@@ -69,15 +59,6 @@ public class OF_EX_LatchType {
 
 	public void setOp2(int op2) {
 		this.op2 = op2;
-	}
-
-
-	public void setAluResult(int aluResult) {
-		this.aluResult = aluResult;
-	}
-
-	public void setResult(int result) {
-		this.result = result;
 	}
 
 	public void setPc(int pc) {

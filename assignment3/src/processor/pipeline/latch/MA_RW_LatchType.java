@@ -3,11 +3,10 @@ package processor.pipeline.latch;
 public class MA_RW_LatchType {
 	
 	boolean RW_enable;
-	int ldResult = 0;
-	int aluResult = 0;
-	int opcode = 0;
-	int pc = 0;
-	int rd = 0;
+	int ldResult;
+	int aluResult;
+	int opcode;
+	int rd ;
 	int r31;
 	
 	public MA_RW_LatchType()
@@ -45,14 +44,6 @@ public class MA_RW_LatchType {
 
 	public void setOpcode(int opcode) {
 		this.opcode = opcode;
-	}
-
-	public int getPc() {
-		return pc;
-	}
-
-	public void setPc(int pc) {
-		this.pc = pc;
 	}
 
 	public int getRd() {

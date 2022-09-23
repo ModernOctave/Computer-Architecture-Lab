@@ -47,7 +47,6 @@ public class MemoryAccess {
 			}
 
 			// Set the values in MA_RW_Latch
-			MA_RW_Latch.setPc(EX_MA_Latch.getPc());
 			MA_RW_Latch.setAluResult(EX_MA_Latch.getAluResult());
 			MA_RW_Latch.setOpcode(opcode);
 			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
