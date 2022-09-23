@@ -32,6 +32,7 @@ public class Execute {
 			int pc = OF_EX_Latch.getPc();
 			int r31 = 0;
 			int remainder = -1;
+			int underflowAmt = -1;
 
 			
 			switch(opcode)
@@ -82,12 +83,16 @@ public class Execute {
 				case 17: _aluResult = (long)op1 << imm;
 						break;
 				case 18: _aluResult = (long)op1 >> op2;
+						underflowAmt = op2;
 						break;
 				case 19: _aluResult = (long)op1 >> imm;
+						underflowAmt = imm;
 						break;
 				case 20: _aluResult = (long)op1 >>> op2;
+						underflowAmt = op2;
 						break;
 				case 21: _aluResult = (long)op1 >>> imm;
+						underflowAmt = imm;
 						break;
 
 				// Memory Instructions
@@ -120,6 +125,11 @@ public class Execute {
 			int aluResult = (int)_aluResult;
 			// Put overflow into r31
 			r31 = (int)(_aluResult >> 32);
+			// Put underflow into r31
+			if(underflowAmt != -1)
+			{
+				r31 = (int)(op1 << (32 - underflowAmt));
+			}
 			// Put remainder into r31
 			if(remainder != -1)
 			{

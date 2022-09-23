@@ -49,7 +49,7 @@ public class Simulator {
 			file.close();
 			Statistics.setNumberOfStaticInstructions(i-pc);
 		} catch (Exception e) {
-			Misc.printErrorAndExit("[Load Program Error]: " + e.getMessage());
+			Misc.printErrorAndExit("[Error]: (Load Program) " + e.getMessage());
 		}
 	}
 	
