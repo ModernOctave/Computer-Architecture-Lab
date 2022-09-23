@@ -10,6 +10,7 @@ public class OF_EX_LatchType {
 	int op1;
 	int op2;
 	int branchTarget;
+	int pc;
 
 	
 	public OF_EX_LatchType()
@@ -49,6 +50,10 @@ public class OF_EX_LatchType {
 		return result;
 	}
 
+	public int getPc() {
+		return pc;
+	}
+
 
 	public void setOpcode(int opcode) {
 		this.opcode = opcode;
@@ -81,6 +86,10 @@ public class OF_EX_LatchType {
 
 	public void setBranchTarget(int branchTarget) {
 		this.branchTarget = branchTarget;
+	}
+
+	public void setPc(int pc) {
+		this.pc = pc;
 	}
 
 }
