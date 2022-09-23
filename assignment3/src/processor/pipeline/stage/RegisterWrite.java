@@ -1,7 +1,9 @@
-package processor.pipeline;
+package processor.pipeline.stage;
 
 import generic.Simulator;
 import processor.Processor;
+import processor.pipeline.latch.IF_EnableLatchType;
+import processor.pipeline.latch.MA_RW_LatchType;
 
 public class RegisterWrite {
 	Processor containingProcessor;

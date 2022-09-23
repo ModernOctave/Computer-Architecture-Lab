@@ -1,18 +1,18 @@
 package processor;
 
 import processor.memorysystem.MainMemory;
-import processor.pipeline.EX_IF_LatchType;
-import processor.pipeline.EX_MA_LatchType;
-import processor.pipeline.Execute;
-import processor.pipeline.IF_EnableLatchType;
-import processor.pipeline.IF_OF_LatchType;
-import processor.pipeline.InstructionFetch;
-import processor.pipeline.MA_RW_LatchType;
-import processor.pipeline.MemoryAccess;
-import processor.pipeline.OF_EX_LatchType;
-import processor.pipeline.OperandFetch;
-import processor.pipeline.RegisterFile;
-import processor.pipeline.RegisterWrite;
+import processor.memorysystem.RegisterFile;
+import processor.pipeline.latch.EX_IF_LatchType;
+import processor.pipeline.latch.EX_MA_LatchType;
+import processor.pipeline.latch.IF_EnableLatchType;
+import processor.pipeline.latch.IF_OF_LatchType;
+import processor.pipeline.latch.MA_RW_LatchType;
+import processor.pipeline.latch.OF_EX_LatchType;
+import processor.pipeline.stage.Execute;
+import processor.pipeline.stage.InstructionFetch;
+import processor.pipeline.stage.MemoryAccess;
+import processor.pipeline.stage.OperandFetch;
+import processor.pipeline.stage.RegisterWrite;
 
 public class Processor {
 	

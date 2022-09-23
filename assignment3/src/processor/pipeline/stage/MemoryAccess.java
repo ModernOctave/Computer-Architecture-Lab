@@ -1,7 +1,9 @@
-package processor.pipeline;
+package processor.pipeline.stage;
 
 import generic.Simulator;
 import processor.Processor;
+import processor.pipeline.latch.EX_MA_LatchType;
+import processor.pipeline.latch.MA_RW_LatchType;
 
 public class MemoryAccess {
 	Processor containingProcessor;

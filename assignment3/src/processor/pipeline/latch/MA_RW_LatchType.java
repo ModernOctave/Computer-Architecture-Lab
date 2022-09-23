@@ -1,4 +1,4 @@
-package processor.pipeline;
+package processor.pipeline.latch;
 
 public class MA_RW_LatchType {
 	

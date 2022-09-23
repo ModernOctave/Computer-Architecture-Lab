@@ -1,7 +1,10 @@
-package processor.pipeline;
+package processor.pipeline.stage;
 
 import generic.Simulator;
 import processor.Processor;
+import processor.pipeline.latch.EX_IF_LatchType;
+import processor.pipeline.latch.IF_EnableLatchType;
+import processor.pipeline.latch.IF_OF_LatchType;
 
 public class InstructionFetch {
 	

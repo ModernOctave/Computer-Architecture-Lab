@@ -1,7 +1,10 @@
-package processor.pipeline;
+package processor.pipeline.stage;
 
 import generic.Simulator;
 import processor.Processor;
+import processor.pipeline.latch.EX_IF_LatchType;
+import processor.pipeline.latch.EX_MA_LatchType;
+import processor.pipeline.latch.OF_EX_LatchType;
 
 public class Execute {
 	Processor containingProcessor;
