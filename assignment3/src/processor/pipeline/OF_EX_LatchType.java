@@ -9,7 +9,6 @@ public class OF_EX_LatchType {
 	int result;
 	int op1;
 	int op2;
-	int branchTarget;
 	int pc;
 
 	
@@ -78,14 +77,6 @@ public class OF_EX_LatchType {
 
 	public void setResult(int result) {
 		this.result = result;
-	}
-
-	public int getBranchTarget() {
-		return branchTarget;
-	}
-
-	public void setBranchTarget(int branchTarget) {
-		this.branchTarget = branchTarget;
 	}
 
 	public void setPc(int pc) {
