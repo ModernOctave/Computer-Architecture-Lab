@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import generic.Simulator;
 import processor.Processor;
 
 public class InstructionFetch {
@@ -26,11 +27,18 @@ public class InstructionFetch {
 			{
 				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
 				containingProcessor.setIsBranchTaken(false);
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
+				}
 			}
 			else
 			{
 				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
-				// System.out.println("PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+				}
 			}
 
 			// IF stage

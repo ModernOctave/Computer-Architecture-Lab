@@ -25,7 +25,6 @@ public class OperandFetch {
 			{
 				binaryInstruction = "0" + binaryInstruction;
 			}
-			// System.out.println("Instruction: " + binaryInstruction);
 
 			// OF stage
 			// opcode
@@ -48,9 +47,6 @@ public class OperandFetch {
 				Integer rd = Integer.parseInt(binaryInstruction.substring(5, 10), 2);
 				Integer Imm = Misc.getIntFromBinaryString(binaryInstruction.substring(10, 32));
 				branchPC = IF_OF_Latch.getPc()+rd+Imm;
-				// System.out.println("jmp rd: " + rd);
-				// System.out.println("jmp imm: " + Imm);
-				// System.out.println("jmp imm: " + branchPC);
 			}
 
 			// op1
@@ -118,11 +114,6 @@ public class OperandFetch {
 				System.out.println("PC: " + IF_OF_Latch.getPc());
 				System.out.println("BranchPC: " + branchPC);
 			}
-
-			// if(IF_OF_Latch.getPc() > 29)
-			// {
-			// 	Misc.printErrorAndExit("PC out of bounds");
-			// }
 		}
 	}
 
