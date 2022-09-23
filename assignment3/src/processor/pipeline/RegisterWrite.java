@@ -23,6 +23,24 @@ public class RegisterWrite {
 			
 			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
 			
+			
+			// if instruction being processed is a load instruction, remember to set the corresponding register in the register file
+
+			// if instruction being processed is a store instruction, remember to write the value to the memory location
+
+			// if instruction being processed is a branch instruction, remember to set the PC of the processor
+
+			if(MA_RW_Latch.opcode>=0 && MA_RW_Latch.opcode <=21)
+			{
+				containingProcessor.getRegisterFile().setValue(MA_RW_Latch.rd, MA_RW_Latch.aluResult);
+			}
+			
+			if(MA_RW_Latch.opcode == 22)
+			{
+				containingProcessor.getRegisterFile().setValue(MA_RW_Latch.rd, MA_RW_Latch.loadResult);
+			}
+
+			
 			MA_RW_Latch.setRW_enable(false);
 			IF_EnableLatch.setIF_enable(true);
 		}
