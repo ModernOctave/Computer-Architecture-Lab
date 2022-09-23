@@ -45,6 +45,9 @@ public class OperandFetch {
 			// op2
 			int rs2 = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 14), 2);
 			int op2 = containingProcessor.getRegisterFile().getValue(rs2);
+
+			// rd
+			int rd = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 19), 2);
 			
 			// Set in latch
 			OF_EX_Latch.setOpcode(opcode);
@@ -52,6 +55,7 @@ public class OperandFetch {
 			OF_EX_Latch.setOp1(op1);
 			OF_EX_Latch.setOp2(op2);
 			OF_EX_Latch.setPc(IF_OF_Latch.getPc());
+			OF_EX_Latch.setRd(rd);
 
 			// Set branchPC
 			containingProcessor.setBranchPC(branchPC);

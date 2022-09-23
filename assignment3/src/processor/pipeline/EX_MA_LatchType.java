@@ -7,6 +7,7 @@ public class EX_MA_LatchType {
 	int aluResult;
 	int op1;
 	int opcode;
+	int rd;
 	
 	public EX_MA_LatchType()
 	{
@@ -51,6 +52,14 @@ public class EX_MA_LatchType {
 
 	public void setOpcode(int opcode) {
 		this.opcode = opcode;
+	}
+
+	public int getRd() {
+		return rd;
+	}
+
+	public void setRd(int rd) {
+		this.rd = rd;
 	}
 
 }
