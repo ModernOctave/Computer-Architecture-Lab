@@ -30,8 +30,8 @@ public class MemoryAccess {
 			else if(opcode == 23)
 			{
 				// store
-				int address = EX_MA_Latch.getOp1();
-				int data = EX_MA_Latch.getAluResult();
+				int data = EX_MA_Latch.getOp1();
+				int address = EX_MA_Latch.getAluResult();
 				containingProcessor.getMainMemory().setWord(address, data);
 			}
 

@@ -1,6 +1,5 @@
 package processor.pipeline;
 
-import generic.Simulator;
 import processor.Processor;
 
 public class InstructionFetch {
@@ -22,12 +21,6 @@ public class InstructionFetch {
 	{
 		if(IF_EnableLatch.isIF_enable())
 		{
-			// IF stage
-			int PC = containingProcessor.getRegisterFile().getProgramCounter();
-			IF_OF_Latch.setPc(PC);
-			int instruction = containingProcessor.getMainMemory().getWord(PC);
-			IF_OF_Latch.setInstruction(instruction);
-
 			// Update PC
 			if(containingProcessor.getIsBranchTaken())
 			{
@@ -39,6 +32,12 @@ public class InstructionFetch {
 				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
 				// System.out.println("PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
 			}
+
+			// IF stage
+			int PC = containingProcessor.getRegisterFile().getProgramCounter();
+			IF_OF_Latch.setPc(PC);
+			int instruction = containingProcessor.getMainMemory().getWord(PC);
+			IF_OF_Latch.setInstruction(instruction);
 			
 			// Set OF_enable
 			IF_EnableLatch.setIF_enable(false);

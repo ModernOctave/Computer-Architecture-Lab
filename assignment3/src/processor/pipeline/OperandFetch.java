@@ -31,12 +31,6 @@ public class OperandFetch {
 			// opcode
 			int opcode = Integer.parseInt(binaryInstruction.substring(0, 5), 2);
 
-			// Handle end instruction
-			if(opcode == 29)
-			{
-				Simulator.setSimulationComplete(true);
-			}
-
 			// imm
 			int imm = Misc.getIntFromBinaryString(binaryInstruction.substring(15, 32));
 
@@ -110,15 +104,20 @@ public class OperandFetch {
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
 
-			// System.out.println("Opcode: " + opcode);
-			// System.out.println("Imm: " + imm);
-			// System.out.println("Rs1: " + rs1);
-			// System.out.println("Rs2: " + rs2);
-			// System.out.println("Rd: " + rd);
-			// System.out.println("Op1: " + op1);
-			// System.out.println("Op2: " + op2);
-			// System.out.println("PC: " + IF_OF_Latch.getPc());
-			// System.out.println("BranchPC: " + branchPC);
+			if(Simulator.isDebugMode())
+			{	
+				System.out.println();
+				System.out.println("PC: " + IF_OF_Latch.getPc());
+				System.out.println("Opcode: " + opcode);
+				System.out.println("Imm: " + imm);
+				System.out.println("Rs1: " + rs1);
+				System.out.println("Rs2: " + rs2);
+				System.out.println("Rd: " + rd);
+				System.out.println("Op1: " + op1);
+				System.out.println("Op2: " + op2);
+				System.out.println("PC: " + IF_OF_Latch.getPc());
+				System.out.println("BranchPC: " + branchPC);
+			}
 
 			// if(IF_OF_Latch.getPc() > 29)
 			// {

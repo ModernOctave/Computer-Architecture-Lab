@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import generic.Simulator;
 import processor.Processor;
 
 public class RegisterWrite {
@@ -45,6 +46,13 @@ public class RegisterWrite {
 			if(opcode >= 6 && opcode <= 7)
 			{
 				containingProcessor.getRegisterFile().setValue(31, MA_RW_Latch.getR31());
+			}
+
+			// Handle end instruction
+			if(opcode == 29)
+			{
+				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
+				Simulator.setSimulationComplete(true);
 			}
 			
 			MA_RW_Latch.setRW_enable(false);

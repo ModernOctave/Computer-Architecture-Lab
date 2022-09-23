@@ -10,6 +10,7 @@ public class Simulator {
 		
 	static Processor processor;
 	static boolean simulationComplete;
+	static boolean debugMode = true;
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
@@ -36,7 +37,7 @@ public class Simulator {
 			byte[] b = new byte[4];
 			file.read(b);
 			int pc = new BigInteger(b).intValue();
-			processor.getRegisterFile().setProgramCounter(pc);
+			processor.getRegisterFile().setProgramCounter(pc-1);
 			processor.getRegisterFile().setValue(0, 0);
 			processor.getRegisterFile().setValue(1, 65535);
 			processor.getRegisterFile().setValue(2, 65535);
@@ -75,5 +76,9 @@ public class Simulator {
 	public static void setSimulationComplete(boolean value)
 	{
 		simulationComplete = value;
+	}
+
+	public static boolean isDebugMode() {
+		return debugMode;
 	}
 }
