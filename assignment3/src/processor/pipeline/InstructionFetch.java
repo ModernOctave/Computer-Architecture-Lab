@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import generic.Simulator;
 import processor.Processor;
 
 public class InstructionFetch {
@@ -36,7 +37,14 @@ public class InstructionFetch {
 			IF_OF_Latch.setPc(PC);
 			int instruction = containingProcessor.getMainMemory().getWord(PC);
 			IF_OF_Latch.setInstruction(instruction);
+
+			// Handle end instruction
+			if(instruction == 29)
+			{
+				Simulator.setSimulationComplete(true);	
+			}
 			
+			// Set OF_enable
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);
 		}
