@@ -31,6 +31,10 @@ public class Processor {
 	Execute EXUnit;
 	MemoryAccess MAUnit;
 	RegisterWrite RWUnit;
+
+	// Control Signals
+	boolean isBranchTaken;
+	int branchPC;
 	
 	public Processor()
 	{
@@ -92,6 +96,22 @@ public class Processor {
 
 	public RegisterWrite getRWUnit() {
 		return RWUnit;
+	}
+
+	public boolean getIsBranchTaken() {
+		return isBranchTaken;
+	}
+
+	public void setIsBranchTaken(boolean isBranchTaken) {
+		this.isBranchTaken = isBranchTaken;
+	}
+
+	public int getBranchPC() {
+		return branchPC;
+	}
+
+	public void setBranchPC(int branchPC) {
+		this.branchPC = branchPC;
 	}
 
 }
