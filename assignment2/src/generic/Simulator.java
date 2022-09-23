@@ -2,12 +2,8 @@ package generic;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.Arrays;
 
-import generic.Instruction.OperationType;
 import generic.Operand.OperandType;
 
 
@@ -24,7 +20,6 @@ public class Simulator {
 
 	public static void assemble(String objectProgramFile)
 	{
-		//TODO your assembler code
 
         try {
             //1. open the objectProgramFile in binary mode
