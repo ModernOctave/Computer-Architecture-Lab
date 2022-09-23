@@ -10,7 +10,7 @@ public class Simulator {
 		
 	static Processor processor;
 	static boolean simulationComplete;
-	static boolean debugMode = true;
+	static boolean debugMode = false;
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
@@ -23,7 +23,6 @@ public class Simulator {
 	static void loadProgram(String assemblyProgramFile)
 	{
 		/*
-		 * TODO
 		 * 1. load the program into memory according to the program layout described
 		 *    in the ISA specification
 		 * 2. set PC to the address of the first instruction in the main
@@ -48,6 +47,7 @@ public class Simulator {
 				i++;
 			}
 			file.close();
+			Statistics.setNumberOfStaticInstructions(i-pc);
 		} catch (Exception e) {
 			Misc.printErrorAndExit("[Load Program Error]: " + e.getMessage());
 		}
@@ -55,6 +55,9 @@ public class Simulator {
 	
 	public static void simulate()
 	{
+		Statistics.setNumberOfDynamicInstructions(0);
+		Statistics.setNumberOfCycles(0);
+
 		while(simulationComplete == false)
 		{
 			processor.getIFUnit().performIF();
@@ -67,10 +70,15 @@ public class Simulator {
 			Clock.incrementClock();
 			processor.getRWUnit().performRW();
 			Clock.incrementClock();
+
+			// Update statistics
+			Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
+			Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
 		}
 		
-		// TODO
-		// set statistics
+		// Set statistics
+		Statistics.setIPC((float)Statistics.getNumberOfDynamicInstructions() / Statistics.getNumberOfCycles());
+		Statistics.setFrequency((float)Statistics.getNumberOfCycles() / Clock.getCurrentTime());
 	}
 	
 	public static void setSimulationComplete(boolean value)
