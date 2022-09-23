@@ -18,8 +18,41 @@ public class OperandFetch {
 	{
 		if(IF_OF_Latch.isOF_enable())
 		{
-			//TODO
+			// OF stage
+			// opcode
+			int opcode = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(0, 4), 2);
+
+			// imm
+			int imm = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 31), 2);
+
+			// branchTarget
+			int branchTarget;
+			if(opcode != 24)
+			{
+				// R2I
+				branchTarget = IF_OF_Latch.getPc()+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(15, 31), 2);
+			}
+			else
+			{
+				// RI
+				branchTarget = IF_OF_Latch.getPc()+Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 31), 2);
+			}
+
+			// op1
+			int rs1 = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(5, 9), 2);
+			int op1 = containingProcessor.getRegisterFile().getValue(rs1);
+
+			// op2
+			int rs2 = Integer.parseInt(Integer.toBinaryString(IF_OF_Latch.getInstruction()).substring(10, 14), 2);
+			int op2 = containingProcessor.getRegisterFile().getValue(rs2);
 			
+			// Set in latch
+			OF_EX_Latch.setOpcode(opcode);
+			OF_EX_Latch.setImm(imm);
+			OF_EX_Latch.setBranchTarget(branchTarget);
+			OF_EX_Latch.setOp1(op1);
+			OF_EX_Latch.setOp2(op2);
+
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
 		}
