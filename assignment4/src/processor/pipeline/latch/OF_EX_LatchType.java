@@ -9,7 +9,7 @@ public class OF_EX_LatchType {
 	int op2;
 	int pc;
 	int rd;
-
+	boolean isBubbled = false;
 	
 	public OF_EX_LatchType()
 	{
@@ -71,6 +71,14 @@ public class OF_EX_LatchType {
 
 	public void setRd(int rd) {
 		this.rd = rd;
+	}
+
+	public boolean isBubbled() {
+		return isBubbled;
+	}
+
+	public void setBubbled(boolean isBubbled) {
+		this.isBubbled = isBubbled;
 	}
 
 }

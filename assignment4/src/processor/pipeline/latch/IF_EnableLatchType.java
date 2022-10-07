@@ -3,6 +3,7 @@ package processor.pipeline.latch;
 public class IF_EnableLatchType {
 	
 	boolean IF_enable;
+	boolean isBubbled = false;
 	
 	public IF_EnableLatchType()
 	{
@@ -15,6 +16,14 @@ public class IF_EnableLatchType {
 
 	public void setIF_enable(boolean iF_enable) {
 		IF_enable = iF_enable;
+	}
+
+	public boolean isBubbled() {
+		return isBubbled;
+	}
+
+	public void setBubbled(boolean isBubbled) {
+		this.isBubbled = isBubbled;
 	}
 
 }

@@ -114,4 +114,28 @@ public class Processor {
 		this.branchPC = branchPC;
 	}
 
+	public IF_EnableLatchType getIF_EnableLatch(IF_EnableLatchType iF_EnableLatch) {
+		return IF_EnableLatch;
+	}
+
+	public IF_OF_LatchType getIF_OF_Latch() {
+		return IF_OF_Latch;
+	}
+
+	public OF_EX_LatchType getOF_EX_Latch() {
+		return OF_EX_Latch;
+	}
+
+	public EX_MA_LatchType getEX_MA_Latch() {
+		return EX_MA_Latch;
+	}
+
+	public MA_RW_LatchType getMA_RW_Latch() {
+		return MA_RW_Latch;
+	}
+
+	public EX_IF_LatchType getEX_IF_Latch() {
+		return EX_IF_Latch;
+	}
+
 }

@@ -9,6 +9,7 @@ public class EX_MA_LatchType {
 	int opcode;
 	int rd;
 	int r31;
+	boolean isBubbled = false;
 	
 	public EX_MA_LatchType()
 	{
@@ -69,6 +70,14 @@ public class EX_MA_LatchType {
 
 	public void setR31(int r31) {
 		this.r31 = r31;
+	}
+
+	public boolean getIsBubbled() {
+		return isBubbled;
+	}
+
+	public void setIsBubbled(boolean isBubbled) {
+		this.isBubbled = isBubbled;
 	}
 
 }

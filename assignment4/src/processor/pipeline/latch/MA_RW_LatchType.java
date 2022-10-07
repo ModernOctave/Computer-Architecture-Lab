@@ -8,6 +8,7 @@ public class MA_RW_LatchType {
 	int opcode;
 	int rd ;
 	int r31;
+	boolean isBubbled = false;
 	
 	public MA_RW_LatchType()
 	{
@@ -60,6 +61,14 @@ public class MA_RW_LatchType {
 
 	public void setR31(int r31) {
 		this.r31 = r31;
+	}
+
+	public boolean isBubbled() {
+		return isBubbled;
+	}
+
+	public void setBubbled(boolean isBubbled) {
+		this.isBubbled = isBubbled;
 	}
 
 }

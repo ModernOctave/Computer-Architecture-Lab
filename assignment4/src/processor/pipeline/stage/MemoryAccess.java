@@ -53,7 +53,7 @@ public class MemoryAccess {
 			MA_RW_Latch.setR31(EX_MA_Latch.getR31());
 
 			// Set RW_enable
-			EX_MA_Latch.setMA_enable(false);
+			// EX_MA_Latch.setMA_enable(false);
 			MA_RW_Latch.setRW_enable(true);
 		}
 	}

@@ -86,6 +86,8 @@ public class OperandFetch {
 				// R1I
 				rd = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
 			}
+
+			if(containingProcessor.getOF_EX_Latch().getOpcode() !=  )
 			
 			// Set in latch
 			OF_EX_Latch.setOpcode(opcode);
@@ -99,7 +101,7 @@ public class OperandFetch {
 			containingProcessor.setBranchPC(branchPC);
 
 			// Set EX_enable
-			IF_OF_Latch.setOF_enable(false);
+			// IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
 
 			if(Simulator.isDebugMode())

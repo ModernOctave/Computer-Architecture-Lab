@@ -149,7 +149,7 @@ public class Execute {
 			EX_MA_Latch.setPc(pc);
 			EX_MA_Latch.setRd(OF_EX_Latch.getRd());
 			EX_MA_Latch.setR31(r31);
-			OF_EX_Latch.setEX_enable(false);
+			// OF_EX_Latch.setEX_enable(false);
 			EX_MA_Latch.setMA_enable(true);
 		}
 	}

@@ -71,6 +71,7 @@ public class Simulator {
 			processor.getRWUnit().performRW();
 			Clock.incrementClock();
 
+
 			// Update statistics
 			Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
 			Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
