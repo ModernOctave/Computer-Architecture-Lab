@@ -20,7 +20,7 @@ public class OperandFetch {
 	
 	public void performOF()
 	{
-		if(IF_OF_Latch.isOF_enable() && IF_OF_Latch.isBubbled())
+		if(IF_OF_Latch.isOF_enable() && !IF_OF_Latch.isBubbled())
 		{
 			String binaryInstruction = Integer.toBinaryString(IF_OF_Latch.getInstruction());
 			while(binaryInstruction.length() < 32)
