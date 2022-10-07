@@ -38,6 +38,17 @@ public class RegisterWrite {
 				int aluResult = MA_RW_Latch.getAluResult();
 				int ldResult = MA_RW_Latch.getLdResult();
 
+				// Handle end instruction
+				if(opcode == 29)
+				{
+					Simulator.setSimulationComplete(true);
+					containingProcessor.getRegisterFile().setProgramCounter(MA_RW_Latch.getPc()+1);
+					if(Simulator.isDebugMode())
+					{
+						System.out.println("[Debug] (RW) End instruction detected");
+					}
+				}
+
 				if(opcode>=0 && opcode <=21)
 				{
 					containingProcessor.getRegisterFile().setValue(rd, aluResult);
@@ -65,6 +76,9 @@ public class RegisterWrite {
 					}
 				}
 			}
+
+			RW_Latch.setRd(MA_RW_Latch.getRd());
+			RW_Latch.setIsBubbled(MA_RW_Latch.isBubbled());
 		}
 	}
 }

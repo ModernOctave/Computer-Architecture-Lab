@@ -10,7 +10,7 @@ public class Simulator {
 		
 	static Processor processor;
 	static boolean simulationComplete;
-	static boolean debugMode = false;
+	static boolean debugMode = true;
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
@@ -36,7 +36,7 @@ public class Simulator {
 			byte[] b = new byte[4];
 			file.read(b);
 			int pc = new BigInteger(b).intValue();
-			processor.getRegisterFile().setProgramCounter(pc-1);
+			processor.getRegisterFile().setProgramCounter(pc);
 			processor.getRegisterFile().setValue(0, 0);
 			processor.getRegisterFile().setValue(1, 65535);
 			processor.getRegisterFile().setValue(2, 65535);
@@ -58,10 +58,16 @@ public class Simulator {
 		Statistics.setNumberOfDynamicInstructions(0);
 		Statistics.setNumberOfCycles(0);
 
+		int i = 0;
 		while(simulationComplete == false)
 		{
+			i++;
 			processor.getIF_EnableLatch().setIsBubbled(false);
 			processor.getRWUnit().performRW();
+			if(simulationComplete == true)
+			{
+				break;
+			}
 			processor.getMAUnit().performMA();
 			processor.getEXUnit().performEX();
 			processor.getOFUnit().performOF();
@@ -69,8 +75,10 @@ public class Simulator {
 			Clock.incrementClock();
 
 			// Update statistics
-			Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
-			Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
+			if(i%5 == 0)
+			{
+				Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
+			}
 		}
 		
 		// Set statistics

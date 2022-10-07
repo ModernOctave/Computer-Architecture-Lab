@@ -2,7 +2,9 @@ package processor.pipeline.stage;
 
 import generic.Misc;
 import generic.Simulator;
+import generic.Statistics;
 import processor.Processor;
+import processor.pipeline.latch.IF_EnableLatchType;
 import processor.pipeline.latch.IF_OF_LatchType;
 import processor.pipeline.latch.OF_EX_LatchType;
 
@@ -61,18 +63,6 @@ public class OperandFetch {
 				int rs2 = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
 				int op2 = containingProcessor.getRegisterFile().getValue(rs2);
 
-
-				// Handle end instruction
-				if(opcode == 29)
-				{
-					containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter());
-					Simulator.setSimulationComplete(true);
-					if(Simulator.isDebugMode())
-					{
-						System.out.println("[Debug] (RW) End instruction detected");
-					}
-				}
-
 				// rd
 				int rd;
 				if(opcode <= 21 && opcode%2 == 0)
@@ -110,9 +100,6 @@ public class OperandFetch {
 				OF_EX_Latch.setRd(rd);
 				OF_EX_Latch.setBranchPC(branchPC);
 
-				// Set EX_enable
-				OF_EX_Latch.setEX_enable(true);
-
 				// Check for stall
 
 				boolean stall = false;
@@ -125,75 +112,153 @@ public class OperandFetch {
 					// Check EX_MA_Latch
 
 					int next_rd = containingProcessor.getEX_MA_Latch().getRd();
+					boolean bubbled = containingProcessor.getEX_MA_Latch().isBubbled();
 
-					if(next_rd == rs1 || next_rd == rs2)
+					if(!bubbled && (next_rd == rs1 || next_rd == rs2))
 					{
 						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to EX_MA_Latch, next_rd: " + next_rd + ", rs1: " + rs1 + ", rs2: " + rs2 + " bubble: " + bubbled);
+						}
 					}
 
 					// Check MA_RW_Latch
 
 					next_rd = containingProcessor.getMA_RW_Latch().getRd();
+					bubbled = containingProcessor.getMA_RW_Latch().isBubbled();
 
-					if(next_rd == rs1 || next_rd == rs2)
+					if(!bubbled && (next_rd == rs1 || next_rd == rs2))
 					{
 						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to MA_RW_Latch, next_rd: " + next_rd + ", rs1: " + rs1 + ", rs2: " + rs2 + " bubble: " + bubbled);
+						}
 					}
 
 					// Check RW_Latch
 
 					next_rd = containingProcessor.getRW_Latch().getRd();
+					bubbled = containingProcessor.getRW_Latch().isBubbled();
 
-					if(next_rd == rs1 || next_rd == rs2)
+					if(!bubbled && (next_rd == rs1 || next_rd == rs2))
 					{
 						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to RW_Latch, next_rd: " + next_rd + ", rs1: " + rs1 + ", rs2: " + rs2 + " bubble: " + bubbled);
+						}
 					}
 
 				}
 
-				//R2I type
+				//R2I type Arithmetic
 
 				if((opcode <= 21 && opcode%2 == 1) || (opcode == 22))
 				{
 					// Check EX_MA_Latch
 
 					int next_rd = containingProcessor.getEX_MA_Latch().getRd();
+					boolean bubbled = containingProcessor.getEX_MA_Latch().isBubbled();
 
-					if(next_rd == rs1)
+					if(!bubbled && (next_rd == rs1 || 31 == rs1))
 					{
 						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to EX_MA_Latch, next_rd = " + next_rd + ", rs1 = " + rs1 + " bubble: " + bubbled);
+						}
 					}
 
 					// Check MA_RW_Latch
 
 					next_rd = containingProcessor.getMA_RW_Latch().getRd();
+					bubbled = containingProcessor.getMA_RW_Latch().isBubbled();
 
-					if(next_rd == rs1)
+					if(!bubbled && (next_rd == rs1 || 31 == rs1))
 					{
 						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to MA_RW_Latch, next_rd = " + next_rd + ", rs1 = " + rs1 + " bubble: " + bubbled);
+						}
 					}
 
 					// Check RW_Latch
 
 					next_rd = containingProcessor.getRW_Latch().getRd();
+					bubbled = containingProcessor.getRW_Latch().isBubbled();
 
-					if(next_rd == rs1)
+					if(!bubbled && (next_rd == rs1 || 31 == rs1))
 					{
 						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to RW_Latch, next_rd = " + next_rd + ", rs1 = " + rs1 + " bubble: " + bubbled);
+						}
+					}
+				}
+
+				// R2I Contol
+				if(opcode == 23 || (opcode >= 25 && opcode <= 28))
+				{
+					// Check EX_MA_Latch
+
+					int next_rd = containingProcessor.getEX_MA_Latch().getRd();
+					boolean bubbled = containingProcessor.getEX_MA_Latch().isBubbled();
+
+					if(!bubbled && (next_rd == rs1 || next_rd == rd || 31 == rd || 31 == rs1))
+					{
+						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to EX_MA_Latch, next_rd = " + next_rd + ", rs1 = " + rs1 + " bubble: " + bubbled);
+						}
+					}
+
+					// Check MA_RW_Latch
+
+					next_rd = containingProcessor.getMA_RW_Latch().getRd();
+					bubbled = containingProcessor.getMA_RW_Latch().isBubbled();
+
+					if(!bubbled && (next_rd == rs1 || next_rd == rd || 31 == rd || 31 == rs1))
+					{
+						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to MA_RW_Latch, next_rd = " + next_rd + ", rs1 = " + rs1 + " bubble: " + bubbled);
+						}
+					}
+
+					// Check RW_Latch
+
+					next_rd = containingProcessor.getRW_Latch().getRd();
+					bubbled = containingProcessor.getRW_Latch().isBubbled();
+
+					if(!bubbled && (next_rd == rs1 || next_rd == rd || 31 == rd || 31 == rs1))
+					{
+						stall = true;
+						if (Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (OF) Stalled due to RW_Latch, next_rd = " + next_rd + ", rs1 = " + rs1 + " bubble: " + bubbled);
+						}
 					}
 				}
 
 				if(stall)
 				{
-					// Decrease PC
-					containingProcessor.setBranchPC(containingProcessor.getBranchPC()-1);
+					// Set stall
+					containingProcessor.getIF_EnableLatch().setIsStalled(true);
 					// Set bubble in latch
-					OF_EX_Latch.setIsBubbled(true);
+					IF_OF_Latch.setIsBubbled(true);
+					Statistics.setNumberOfStalls(Statistics.getNumberOfStalls() + 1);
 				}
 
 
 				if(Simulator.isDebugMode())
 				{	
+					System.out.println("[Debug] (OF) Stalled: " + stall);
 					System.out.println("[Debug] (OF) PC: " + IF_OF_Latch.getPc());
 					System.out.println("[Debug] (OF) Opcode: " + opcode);
 					System.out.println("[Debug] (OF) Rs1: " + rs1);
@@ -206,6 +271,9 @@ public class OperandFetch {
 
 				}
 			}
+
+			// Set EX_enable
+			OF_EX_Latch.setEX_enable(true);
 			
 			// Pass the bubble to the next latch
 			containingProcessor.getOF_EX_Latch().setIsBubbled(IF_OF_Latch.isBubbled());

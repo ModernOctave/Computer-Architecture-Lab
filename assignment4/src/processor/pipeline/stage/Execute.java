@@ -165,8 +165,9 @@ public class Execute {
 				EX_MA_Latch.setPc(pc);
 				EX_MA_Latch.setRd(OF_EX_Latch.getRd());
 				EX_MA_Latch.setR31(r31);
-				EX_MA_Latch.setMA_enable(true);
 			}
+
+			EX_MA_Latch.setMA_enable(true);
 
 			// Pass on the bubble signal
 			EX_MA_Latch.setIsBubbled(OF_EX_Latch.isBubbled());

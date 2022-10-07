@@ -10,7 +10,7 @@ public class Simulator {
 		
 	static Processor processor;
 	static boolean simulationComplete;
-	static boolean debugMode = false;
+	static boolean debugMode = true;
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{

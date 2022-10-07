@@ -1,6 +1,7 @@
 package processor.pipeline.stage;
 
 import generic.Simulator;
+import generic.Statistics;
 import processor.Processor;
 import processor.pipeline.latch.EX_IF_LatchType;
 import processor.pipeline.latch.IF_EnableLatchType;
@@ -23,46 +24,65 @@ public class InstructionFetch {
 	
 	public void performIF()
 	{
-		if(Simulator.isDebugMode()) 
-		{
-			System.out.println();
-		}
 		
 		if(IF_EnableLatch.isIF_enable())
 		{
+			
 			if(!IF_EnableLatch.isBubbled())
 			{
 				// Update PC
-				if(containingProcessor.getIsBranchTaken())
+				if(!IF_EnableLatch.isStalled())
 				{
-					containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
-					containingProcessor.setIsBranchTaken(false);
+					if(containingProcessor.getIsBranchTaken())
+					{
+						containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
+						containingProcessor.setIsBranchTaken(false);
+						if(Simulator.isDebugMode())
+						{
+							System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
+						}
+					}
+
 					if(Simulator.isDebugMode())
 					{
-						System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
+						System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
 					}
-				}
-				else
-				{
+
+					// IF stage
+					int PC = containingProcessor.getRegisterFile().getProgramCounter();
+					IF_OF_Latch.setPc(PC);
+					int instruction = containingProcessor.getMainMemory().getWord(PC);
+					IF_OF_Latch.setInstruction(instruction);
+
+					Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
+
 					containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
 					if(Simulator.isDebugMode())
 					{
 						System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
 					}
 				}
-
-				// IF stage
-				int PC = containingProcessor.getRegisterFile().getProgramCounter();
-				IF_OF_Latch.setPc(PC);
-				int instruction = containingProcessor.getMainMemory().getWord(PC);
-				IF_OF_Latch.setInstruction(instruction);
-				
-				// Set OF_enable
-				IF_OF_Latch.setOF_enable(true);
+				else
+				{
+					IF_EnableLatch.setIsStalled(false);
+					if(Simulator.isDebugMode())
+					{
+						System.out.println("[Debug] (IF) Stalled instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
+					}
+				}
 			}
+				
+			// Set OF_enable
+			IF_OF_Latch.setOF_enable(true);
 
 			// Pass the bubble signal to the next stage
 			IF_OF_Latch.setIsBubbled(IF_EnableLatch.isBubbled());
+		}
+
+
+		if(Simulator.isDebugMode()) 
+		{
+			System.out.println();
 		}
 	}
 

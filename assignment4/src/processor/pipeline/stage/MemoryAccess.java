@@ -53,11 +53,10 @@ public class MemoryAccess {
 				MA_RW_Latch.setOpcode(opcode);
 				MA_RW_Latch.setRd(EX_MA_Latch.getRd());
 				MA_RW_Latch.setR31(EX_MA_Latch.getR31());
-
-				// Set RW_enable
-				// EX_MA_Latch.setMA_enable(false);
-				MA_RW_Latch.setRW_enable(true);
+				MA_RW_Latch.setPc(EX_MA_Latch.getPc());
 			}
+
+			MA_RW_Latch.setRW_enable(true);
 			
 			// Pass the bubble signal to MA_RW_Latch
 			MA_RW_Latch.setIsBubbled(EX_MA_Latch.isBubbled());
