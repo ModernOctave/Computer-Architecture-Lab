@@ -22,7 +22,7 @@ public class Execute {
 	
 	public void performEX()
 	{
-		if(OF_EX_Latch.isEX_enable())
+		if(OF_EX_Latch.isEX_enable() && !OF_EX_Latch.isBubbled())
 		{
 			int opcode = OF_EX_Latch.getOpcode();
 			int imm = OF_EX_Latch.getImm();

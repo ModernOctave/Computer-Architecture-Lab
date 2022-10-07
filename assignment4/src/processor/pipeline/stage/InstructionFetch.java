@@ -28,7 +28,7 @@ public class InstructionFetch {
 			System.out.println();
 		}
 		
-		if(IF_EnableLatch.isIF_enable())
+		if(IF_EnableLatch.isIF_enable() && !IF_EnableLatch.isBubbled())
 		{
 			// Update PC
 			if(containingProcessor.getIsBranchTaken())

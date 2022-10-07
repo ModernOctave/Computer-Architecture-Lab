@@ -19,7 +19,7 @@ public class RegisterWrite {
 	
 	public void performRW()
 	{
-		if(MA_RW_Latch.isRW_enable())
+		if(MA_RW_Latch.isRW_enable() && !MA_RW_Latch.isBubbled())
 		{	
 			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
 			

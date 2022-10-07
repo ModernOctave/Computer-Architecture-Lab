@@ -19,7 +19,7 @@ public class MemoryAccess {
 	
 	public void performMA()
 	{
-		if(EX_MA_Latch.isMA_enable())
+		if(EX_MA_Latch.isMA_enable() && !EX_MA_Latch.getIsBubbled())
 		{
 			int opcode = EX_MA_Latch.getOpcode();
 	
