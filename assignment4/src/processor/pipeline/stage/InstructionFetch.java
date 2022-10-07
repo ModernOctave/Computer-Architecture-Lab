@@ -28,36 +28,41 @@ public class InstructionFetch {
 			System.out.println();
 		}
 		
-		if(IF_EnableLatch.isIF_enable() && !IF_EnableLatch.isBubbled())
+		if(IF_EnableLatch.isIF_enable())
 		{
-			// Update PC
-			if(containingProcessor.getIsBranchTaken())
+			if(!IF_EnableLatch.isBubbled())
 			{
-				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
-				containingProcessor.setIsBranchTaken(false);
-				if(Simulator.isDebugMode())
+				// Update PC
+				if(containingProcessor.getIsBranchTaken())
 				{
-					System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
+					containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
+					containingProcessor.setIsBranchTaken(false);
+					if(Simulator.isDebugMode())
+					{
+						System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
+					}
 				}
-			}
-			else
-			{
-				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
-				if(Simulator.isDebugMode())
+				else
 				{
-					System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+					containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
+					if(Simulator.isDebugMode())
+					{
+						System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+					}
 				}
+
+				// IF stage
+				int PC = containingProcessor.getRegisterFile().getProgramCounter();
+				IF_OF_Latch.setPc(PC);
+				int instruction = containingProcessor.getMainMemory().getWord(PC);
+				IF_OF_Latch.setInstruction(instruction);
+				
+				// Set OF_enable
+				IF_OF_Latch.setOF_enable(true);
 			}
 
-			// IF stage
-			int PC = containingProcessor.getRegisterFile().getProgramCounter();
-			IF_OF_Latch.setPc(PC);
-			int instruction = containingProcessor.getMainMemory().getWord(PC);
-			IF_OF_Latch.setInstruction(instruction);
-			
-			// Set OF_enable
-			// IF_EnableLatch.setIF_enable(false);
-			IF_OF_Latch.setOF_enable(true);
+			// Pass the bubble signal to the next stage
+			IF_OF_Latch.setIsBubbled(IF_EnableLatch.isBubbled());
 		}
 	}
 

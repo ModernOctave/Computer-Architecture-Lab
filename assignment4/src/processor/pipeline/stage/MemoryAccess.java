@@ -19,42 +19,48 @@ public class MemoryAccess {
 	
 	public void performMA()
 	{
-		if(EX_MA_Latch.isMA_enable() && !EX_MA_Latch.getIsBubbled())
+		if(EX_MA_Latch.isMA_enable())
 		{
-			int opcode = EX_MA_Latch.getOpcode();
-	
-			if(opcode == 22)
+			if(!EX_MA_Latch.isBubbled())
 			{
-				// load
-				int address = EX_MA_Latch.getAluResult();
-				int data = containingProcessor.getMainMemory().getWord(address);
-				MA_RW_Latch.setLdResult(data);
-				if(Simulator.isDebugMode())
+				int opcode = EX_MA_Latch.getOpcode();
+		
+				if(opcode == 22)
 				{
-					System.out.println("[Debug] (MA) Load from address " + address + " data " + data);
+					// load
+					int address = EX_MA_Latch.getAluResult();
+					int data = containingProcessor.getMainMemory().getWord(address);
+					MA_RW_Latch.setLdResult(data);
+					if(Simulator.isDebugMode())
+					{
+						System.out.println("[Debug] (MA) Load from address " + address + " data " + data);
+					}
 				}
-			}
-			else if(opcode == 23)
-			{
-				// store
-				int data = EX_MA_Latch.getOp1();
-				int address = EX_MA_Latch.getAluResult();
-				containingProcessor.getMainMemory().setWord(address, data);
-				if(Simulator.isDebugMode())
+				else if(opcode == 23)
 				{
-					System.out.println("[Debug] (MA) Store to address " + address + " data " + data);
+					// store
+					int data = EX_MA_Latch.getOp1();
+					int address = EX_MA_Latch.getAluResult();
+					containingProcessor.getMainMemory().setWord(address, data);
+					if(Simulator.isDebugMode())
+					{
+						System.out.println("[Debug] (MA) Store to address " + address + " data " + data);
+					}
 				}
+
+				// Set the values in MA_RW_Latch
+				MA_RW_Latch.setAluResult(EX_MA_Latch.getAluResult());
+				MA_RW_Latch.setOpcode(opcode);
+				MA_RW_Latch.setRd(EX_MA_Latch.getRd());
+				MA_RW_Latch.setR31(EX_MA_Latch.getR31());
+
+				// Set RW_enable
+				// EX_MA_Latch.setMA_enable(false);
+				MA_RW_Latch.setRW_enable(true);
 			}
-
-			// Set the values in MA_RW_Latch
-			MA_RW_Latch.setAluResult(EX_MA_Latch.getAluResult());
-			MA_RW_Latch.setOpcode(opcode);
-			MA_RW_Latch.setRd(EX_MA_Latch.getRd());
-			MA_RW_Latch.setR31(EX_MA_Latch.getR31());
-
-			// Set RW_enable
-			// EX_MA_Latch.setMA_enable(false);
-			MA_RW_Latch.setRW_enable(true);
+			
+			// Pass the bubble signal to MA_RW_Latch
+			MA_RW_Latch.setIsBubbled(EX_MA_Latch.isBubbled());
 		}
 	}
 

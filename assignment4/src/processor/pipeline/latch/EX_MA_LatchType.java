@@ -72,7 +72,7 @@ public class EX_MA_LatchType {
 		this.r31 = r31;
 	}
 
-	public boolean getIsBubbled() {
+	public boolean isBubbled() {
 		return isBubbled;
 	}
 

@@ -9,6 +9,7 @@ public class OF_EX_LatchType {
 	int op2;
 	int pc;
 	int rd;
+	int branchPC;
 	boolean isBubbled = false;
 	
 	public OF_EX_LatchType()
@@ -77,8 +78,16 @@ public class OF_EX_LatchType {
 		return isBubbled;
 	}
 
-	public void setBubbled(boolean isBubbled) {
+	public void setIsBubbled(boolean isBubbled) {
 		this.isBubbled = isBubbled;
+	}
+
+	public int getBranchPC() {
+		return branchPC;
+	}
+
+	public void setBranchPC(int branchPC) {
+		this.branchPC = branchPC;
 	}
 
 }

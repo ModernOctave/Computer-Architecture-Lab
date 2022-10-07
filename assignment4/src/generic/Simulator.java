@@ -60,12 +60,12 @@ public class Simulator {
 
 		while(simulationComplete == false)
 		{
+			processor.getIF_EnableLatch().setIsBubbled(false);
 			processor.getRWUnit().performRW();
 			processor.getMAUnit().performMA();
 			processor.getEXUnit().performEX();
 			processor.getOFUnit().performOF();
 			processor.getIFUnit().performIF();
-
 			Clock.incrementClock();
 
 			// Update statistics

@@ -8,6 +8,7 @@ import processor.pipeline.latch.IF_EnableLatchType;
 import processor.pipeline.latch.IF_OF_LatchType;
 import processor.pipeline.latch.MA_RW_LatchType;
 import processor.pipeline.latch.OF_EX_LatchType;
+import processor.pipeline.latch.RW_LatchType;
 import processor.pipeline.stage.Execute;
 import processor.pipeline.stage.InstructionFetch;
 import processor.pipeline.stage.MemoryAccess;
@@ -25,6 +26,7 @@ public class Processor {
 	EX_MA_LatchType EX_MA_Latch;
 	EX_IF_LatchType EX_IF_Latch;
 	MA_RW_LatchType MA_RW_Latch;
+	RW_LatchType RW_Latch;
 	
 	InstructionFetch IFUnit;
 	OperandFetch OFUnit;
@@ -47,12 +49,13 @@ public class Processor {
 		EX_MA_Latch = new EX_MA_LatchType();
 		EX_IF_Latch = new EX_IF_LatchType();
 		MA_RW_Latch = new MA_RW_LatchType();
+		RW_Latch = new RW_LatchType();
 		
 		IFUnit = new InstructionFetch(this, IF_EnableLatch, IF_OF_Latch, EX_IF_Latch);
 		OFUnit = new OperandFetch(this, IF_OF_Latch, OF_EX_Latch);
 		EXUnit = new Execute(this, OF_EX_Latch, EX_MA_Latch, EX_IF_Latch);
 		MAUnit = new MemoryAccess(this, EX_MA_Latch, MA_RW_Latch);
-		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch);
+		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch, RW_Latch);
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)
@@ -114,7 +117,7 @@ public class Processor {
 		this.branchPC = branchPC;
 	}
 
-	public IF_EnableLatchType getIF_EnableLatch(IF_EnableLatchType iF_EnableLatch) {
+	public IF_EnableLatchType getIF_EnableLatch() {
 		return IF_EnableLatch;
 	}
 
@@ -136,6 +139,10 @@ public class Processor {
 
 	public EX_IF_LatchType getEX_IF_Latch() {
 		return EX_IF_Latch;
+	}
+
+	public RW_LatchType getRW_Latch() {
+		return RW_Latch;
 	}
 
 }

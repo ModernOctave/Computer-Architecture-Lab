@@ -67,7 +67,7 @@ public class MA_RW_LatchType {
 		return isBubbled;
 	}
 
-	public void setBubbled(boolean isBubbled) {
+	public void setIsBubbled(boolean isBubbled) {
 		this.isBubbled = isBubbled;
 	}
 

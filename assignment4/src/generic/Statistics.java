@@ -8,6 +8,8 @@ public class Statistics {
 	static int numberOfStaticInstructions;
 	static int numberOfDynamicInstructions;
 	static int numberOfCycles;
+	static int numberOfStalls;
+	static int numberOfIncorrectBranches;
 	static float IPC;
 	static float frequency;
 	
@@ -23,6 +25,8 @@ public class Statistics {
 			writer.println("Number of cycles taken = " + numberOfCycles);
 			writer.println("IPC = " + IPC);
 			writer.println("Frequency = " + frequency + " GHz");
+			writer.println("Number of stalls = " + numberOfStalls);
+			writer.println("Number of incorrect branches = " + numberOfIncorrectBranches);
 			
 			writer.close();
 		}
@@ -70,5 +74,21 @@ public class Statistics {
 
 	public static float getFrequency() {
 		return frequency;
+	}
+
+	public static void setNumberOfStalls(int numberOfStalls) {
+		Statistics.numberOfStalls = numberOfStalls;
+	}
+
+	public static int getNumberOfStalls() {
+		return numberOfStalls;
+	}
+
+	public static void setNumberOfIncorrectBranches(int numberOfIncorrectBranches) {
+		Statistics.numberOfIncorrectBranches = numberOfIncorrectBranches;
+	}
+
+	public static int getNumberOfIncorrectBranches() {
+		return numberOfIncorrectBranches;
 	}
 }
