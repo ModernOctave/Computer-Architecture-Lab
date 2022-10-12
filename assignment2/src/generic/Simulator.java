@@ -163,7 +163,7 @@ public class Simulator {
 
                         String imm = "";
                         if (operand.getOperandType() == OperandType.Immediate) {
-                            System.out.println("Immerdiate: "+operand.getValue());
+							imm = Integer.toBinaryString(operand.getValue());
                             while (imm.length() < 17) {
                                 imm = "0" + imm;
                             }

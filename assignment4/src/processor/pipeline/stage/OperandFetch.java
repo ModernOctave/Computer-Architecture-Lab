@@ -114,7 +114,7 @@ public class OperandFetch {
 					int next_rd = containingProcessor.getEX_MA_Latch().getRd();
 					boolean bubbled = containingProcessor.getEX_MA_Latch().isBubbled();
 
-					if(!bubbled && (next_rd == rs1 || next_rd == rs2))
+					if(!bubbled && (next_rd == rs1 || next_rd == rs2 || 31 == rs1 || 31 == rs2))
 					{
 						stall = true;
 						if (Simulator.isDebugMode())
@@ -128,7 +128,7 @@ public class OperandFetch {
 					next_rd = containingProcessor.getMA_RW_Latch().getRd();
 					bubbled = containingProcessor.getMA_RW_Latch().isBubbled();
 
-					if(!bubbled && (next_rd == rs1 || next_rd == rs2))
+					if(!bubbled && (next_rd == rs1 || next_rd == rs2 || 31 == rs1 || 31 == rs2))
 					{
 						stall = true;
 						if (Simulator.isDebugMode())
@@ -142,7 +142,7 @@ public class OperandFetch {
 					next_rd = containingProcessor.getRW_Latch().getRd();
 					bubbled = containingProcessor.getRW_Latch().isBubbled();
 
-					if(!bubbled && (next_rd == rs1 || next_rd == rs2))
+					if(!bubbled && (next_rd == rs1 || next_rd == rs2 || 31 == rs1 || 31 == rs2))
 					{
 						stall = true;
 						if (Simulator.isDebugMode())

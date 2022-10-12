@@ -83,7 +83,7 @@ public class OperandFetch {
 			}
 			else
 			{
-				// R1I
+				// R2I
 				rd = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
 			}
 			
