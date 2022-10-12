@@ -30,7 +30,7 @@ public class Execute {
 			int op2 = OF_EX_Latch.getOp2();
 			long _aluResult = 0;
 			int pc = OF_EX_Latch.getPc();
-			int r31 = 0;
+			int r31 = -1;
 			int remainder = -1;
 			int underflowAmt = -1;
 
@@ -124,7 +124,9 @@ public class Execute {
 			// Take only the lower 32 bits of the result
 			int aluResult = (int)_aluResult;
 			// Put overflow into r31
-			r31 = (int)(_aluResult >> 32);
+			overflow = (int)(_aluResult >> 32);
+			if(overflow != 0)
+				r31 = overflow;
 			// Put underflow into r31
 			if(underflowAmt != -1)
 			{

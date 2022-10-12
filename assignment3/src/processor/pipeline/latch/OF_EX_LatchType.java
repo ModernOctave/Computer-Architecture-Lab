@@ -9,6 +9,7 @@ public class OF_EX_LatchType {
 	int op2;
 	int pc;
 	int rd;
+	int r31;
 
 	
 	public OF_EX_LatchType()
@@ -72,5 +73,4 @@ public class OF_EX_LatchType {
 	public void setRd(int rd) {
 		this.rd = rd;
 	}
-
 }

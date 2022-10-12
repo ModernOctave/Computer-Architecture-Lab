@@ -52,9 +52,10 @@ public class RegisterWrite {
 				}
 			}
 
-			if(opcode >= 6 && opcode <= 7)
+			r31 = MA_RW_Latch.getR31();
+			if(opcode >= 0 && opcode <= 21 && r31 != -1)
 			{
-				containingProcessor.getRegisterFile().setValue(31, MA_RW_Latch.getR31());
+				containingProcessor.getRegisterFile().setValue(31, r31);
 				if(Simulator.isDebugMode())
 				{
 					System.out.println("[Debug] (RW) Write to register 31 data " + MA_RW_Latch.getR31());
