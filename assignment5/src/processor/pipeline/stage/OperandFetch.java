@@ -256,10 +256,15 @@ public class OperandFetch {
 					// Set bubble in latch
 					OF_EX_Latch.setIsBubbled(true);
 					Statistics.setNumberOfStalls(Statistics.getNumberOfStalls() + 1);
+
+					OF_EX_Latch.setEX_enable(true);
 				}
 				else
 				{
 					containingProcessor.getIF_EnableLatch().setIF_enable(true);
+
+					OF_EX_Latch.setEX_enable(true);
+					IF_OF_Latch.setOF_enable(false);
 				}
 
 
@@ -277,8 +282,6 @@ public class OperandFetch {
 					System.out.println("[Debug] (OF) BranchPC: " + branchPC);
 
 				}
-
-				OF_EX_Latch.setEX_enable(true);
 			}
 			else
 			{

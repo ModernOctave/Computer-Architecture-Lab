@@ -1,13 +1,19 @@
 package processor.pipeline.stage;
 
+
+import processor.Clock;
+import generic.Element;
+import generic.Event;
+import generic.MemoryResponseEvent;
 import generic.Simulator;
 import generic.Statistics;
+import generic.*;
 import processor.Processor;
 import processor.pipeline.latch.EX_IF_LatchType;
 import processor.pipeline.latch.IF_EnableLatchType;
 import processor.pipeline.latch.IF_OF_LatchType;
 
-public class InstructionFetch {
+public class InstructionFetch implements Element {
 	
 	Processor containingProcessor;
 	IF_EnableLatchType IF_EnableLatch;
@@ -25,8 +31,10 @@ public class InstructionFetch {
 	public void performIF()
 	{
 		
-		if(IF_EnableLatch.isIF_enable())
+		if(IF_EnableLatch.isIF_enable() && !IF_EnableLatch.isBusy())
 		{
+			// Pass the bubble signal to the next stage
+			IF_OF_Latch.setIsBubbled(IF_EnableLatch.isBubbled());
 			
 			if(!IF_EnableLatch.isBubbled())
 			{
@@ -41,38 +49,58 @@ public class InstructionFetch {
 					}
 				}
 
-				if(Simulator.isDebugMode())
-				{
-					System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
-				}
-
 				// IF stage
 				int PC = containingProcessor.getRegisterFile().getProgramCounter();
 				IF_OF_Latch.setPc(PC);
-				int instruction = containingProcessor.getMainMemory().getWord(PC);
-				IF_OF_Latch.setInstruction(instruction);
 
-				Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
-
-				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
 				if(Simulator.isDebugMode())
 				{
-					System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+					System.out.println("[Debug] (IF) Fetching instruction from memory");
 				}
+				// Create MemoryReadEvent
+				Event event = new MemoryReadEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), PC);
+				// Add event to the event queue
+				Simulator.getEventQueue().addEvent(event);
+
+				// Set IF busy
+				IF_EnableLatch.setIsBusy(true);
 			}
-				
-			// Set OF_enable
-			IF_OF_Latch.setOF_enable(true);
-
-			// Pass the bubble signal to the next stage
-			IF_OF_Latch.setIsBubbled(IF_EnableLatch.isBubbled());
-		}
-
-
-		if(Simulator.isDebugMode()) 
-		{
-			System.out.println();
+			else
+			{
+				IF_OF_Latch.setOF_enable(true);
+			}
 		}
 	}
 
+	@Override
+	public void handleEvent(Event e)
+	{
+		if(e.getEventType() == Event.EventType.MemoryResponse)
+		{
+			if(Simulator.isDebugMode())
+			{
+				System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
+			}
+
+			MemoryResponseEvent event = (MemoryResponseEvent) e;
+			
+			int instruction = event.getValue();
+			IF_OF_Latch.setInstruction(instruction);
+
+			Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
+
+			containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
+
+			if(Simulator.isDebugMode())
+			{
+				System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+			}
+
+			// Set IF not busy
+			IF_EnableLatch.setIsBusy(false);
+
+			// Set OF_enable
+			IF_OF_Latch.setOF_enable(true);
+		}
+	}
 }

@@ -63,7 +63,14 @@ public class Simulator {
 		while(simulationComplete == false)
 		{
 			i++;
+
+			if(Simulator.isDebugMode()) 
+			{
+				System.out.println();
+			}
+
 			processor.getIF_EnableLatch().setIsBubbled(false);
+			
 			processor.getRWUnit().performRW();
 			if(simulationComplete == true)
 			{

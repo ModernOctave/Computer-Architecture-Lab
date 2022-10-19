@@ -3,13 +3,16 @@ package processor.pipeline.latch;
 public class IF_EnableLatchType {
 	
 	boolean IF_enable;
-	boolean isBubbled = false;
+	boolean isBubbled;
 	boolean isStalled;
+	boolean isBusy;
 	
 	public IF_EnableLatchType()
 	{
 		IF_enable = true;
+		isBubbled = false;
 		isStalled = false;
+		isBusy = false;
 	}
 
 	public boolean isIF_enable() {
@@ -34,6 +37,14 @@ public class IF_EnableLatchType {
 
 	public void setIsStalled(boolean isStalled) {
 		this.isStalled = isStalled;
+	}
+
+	public boolean isBusy() {
+		return isBusy;
+	}
+
+	public void setIsBusy(boolean isBusy) {
+		this.isBusy = isBusy;
 	}
 
 }
