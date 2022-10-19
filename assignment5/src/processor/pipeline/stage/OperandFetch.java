@@ -21,7 +21,9 @@ public class OperandFetch {
 	
 	public void performOF()
 	{
-		if(IF_OF_Latch.isOF_enable())
+		IF_OF_Latch.setIsBusy(OF_EX_Latch.isBusy());
+
+		if(IF_OF_Latch.isOF_enable() && !OF_EX_Latch.isBusy())
 		{
 
 			// Pass the bubble to the next latch

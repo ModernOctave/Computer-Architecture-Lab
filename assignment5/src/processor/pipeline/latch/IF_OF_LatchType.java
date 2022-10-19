@@ -6,6 +6,7 @@ public class IF_OF_LatchType {
 	int instruction;
 	int pc;
 	boolean isBubbled = false;
+	boolean isBusy = false;
 	
 	public IF_OF_LatchType()
 	{
@@ -42,6 +43,14 @@ public class IF_OF_LatchType {
 
 	public void setIsBubbled(boolean isBubbled) {
 		this.isBubbled = isBubbled;
+	}
+
+	public boolean isBusy() {
+		return isBusy;
+	}
+
+	public void setIsBusy(boolean isBusy) {
+		this.isBusy = isBusy;
 	}
 
 

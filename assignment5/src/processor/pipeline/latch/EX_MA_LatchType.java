@@ -10,6 +10,7 @@ public class EX_MA_LatchType {
 	int rd;
 	int r31;
 	boolean isBubbled = false;
+	boolean isBusy = false;
 	
 	public EX_MA_LatchType()
 	{
@@ -78,6 +79,14 @@ public class EX_MA_LatchType {
 
 	public void setIsBubbled(boolean isBubbled) {
 		this.isBubbled = isBubbled;
+	}
+
+	public boolean isBusy() {
+		return isBusy;
+	}
+
+	public void setIsBusy(boolean isBusy) {
+		this.isBusy = isBusy;
 	}
 
 }

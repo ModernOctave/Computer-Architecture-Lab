@@ -23,7 +23,9 @@ public class Execute {
 	
 	public void performEX()
 	{
-		if(OF_EX_Latch.isEX_enable())
+		OF_EX_Latch.setIsBusy(EX_MA_Latch.isBusy());
+
+		if(OF_EX_Latch.isEX_enable() && !EX_MA_Latch.isBusy())
 		{
 			if(!OF_EX_Latch.isBubbled())
 			{

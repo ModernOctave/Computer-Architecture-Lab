@@ -12,6 +12,7 @@ public class OF_EX_LatchType {
 	int r31;
 	int branchPC;
 	boolean isBubbled = false;
+	boolean isBusy = false;
 	
 	public OF_EX_LatchType()
 	{
@@ -89,6 +90,22 @@ public class OF_EX_LatchType {
 
 	public void setBranchPC(int branchPC) {
 		this.branchPC = branchPC;
+	}
+
+	// public int getR31() {
+	// 	return r31;
+	// }
+
+	// public void setR31(int r31) {
+	// 	this.r31 = r31;
+	// }
+
+	public boolean isBusy() {
+		return isBusy;
+	}
+
+	public void setIsBusy(boolean isBusy) {
+		this.isBusy = isBusy;
 	}
 
 }

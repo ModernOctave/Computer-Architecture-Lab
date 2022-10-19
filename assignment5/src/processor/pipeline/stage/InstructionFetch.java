@@ -4,7 +4,7 @@ package processor.pipeline.stage;
 import processor.Clock;
 import generic.Element;
 import generic.Event;
-import generic.MemoryResponseEvent;
+import generic.MemoryReadResponseEvent;
 import generic.Simulator;
 import generic.Statistics;
 import generic.*;
@@ -48,7 +48,6 @@ public class InstructionFetch implements Element {
 						System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
 					}
 				}
-
 				// IF stage
 				int PC = containingProcessor.getRegisterFile().getProgramCounter();
 				IF_OF_Latch.setPc(PC);
@@ -75,32 +74,40 @@ public class InstructionFetch implements Element {
 	@Override
 	public void handleEvent(Event e)
 	{
-		if(e.getEventType() == Event.EventType.MemoryResponse)
+		if(IF_OF_Latch.isBusy())
 		{
-			if(Simulator.isDebugMode())
+			e.setEventTime(Clock.getCurrentTime()+1);
+			Simulator.getEventQueue().addEvent(e);
+		}
+		else
+		{
+			if(e.getEventType() == Event.EventType.MemoryReadResponse)
 			{
-				System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
+				}
+
+				MemoryReadResponseEvent event = (MemoryReadResponseEvent) e;
+				
+				int instruction = event.getValue();
+				IF_OF_Latch.setInstruction(instruction);
+
+				Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
+
+				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
+
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+				}
+
+				// Set IF not busy
+				IF_EnableLatch.setIsBusy(false);
+
+				// Set OF_enable
+				IF_OF_Latch.setOF_enable(true);
 			}
-
-			MemoryResponseEvent event = (MemoryResponseEvent) e;
-			
-			int instruction = event.getValue();
-			IF_OF_Latch.setInstruction(instruction);
-
-			Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
-
-			containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
-
-			if(Simulator.isDebugMode())
-			{
-				System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
-			}
-
-			// Set IF not busy
-			IF_EnableLatch.setIsBusy(false);
-
-			// Set OF_enable
-			IF_OF_Latch.setOF_enable(true);
 		}
 	}
 }

@@ -21,7 +21,7 @@ public class RegisterWrite {
 	
 	public void performRW()
 	{
-		if(MA_RW_Latch.isRW_enable() )
+		if(MA_RW_Latch.isRW_enable())
 		{	
 			if (!MA_RW_Latch.isBubbled())
 			{
@@ -77,10 +77,24 @@ public class RegisterWrite {
 					}
 				}
 			}
+			else
+			{
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (RW) Bubbled");
+				}
+			}
 
 			RW_Latch.setRd(MA_RW_Latch.getRd());
 			RW_Latch.setIsBubbled(MA_RW_Latch.isBubbled());
 			MA_RW_Latch.setRW_enable(false);
+		}
+		else
+		{
+			if(Simulator.isDebugMode())
+			{
+				System.out.println("[Debug] (RW) Not enabled");
+			}
 		}
 	}
 }
