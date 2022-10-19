@@ -52,7 +52,7 @@ public class RegisterWrite {
 				}
 			}
 
-			r31 = MA_RW_Latch.getR31();
+			int r31 = MA_RW_Latch.getR31();
 			if(opcode >= 0 && opcode <= 21 && r31 != -1)
 			{
 				containingProcessor.getRegisterFile().setValue(31, r31);

@@ -90,6 +90,9 @@ public class OperandFetch {
 					// R1I
 					rd = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
 				}
+
+				// r31
+				int r31 = containingProcessor.getRegisterFile().getValue(31);
 				
 				// Set in latch
 				OF_EX_Latch.setOpcode(opcode);

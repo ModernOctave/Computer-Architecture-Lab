@@ -124,7 +124,7 @@ public class Execute {
 			// Take only the lower 32 bits of the result
 			int aluResult = (int)_aluResult;
 			// Put overflow into r31
-			overflow = (int)(_aluResult >> 32);
+			int overflow = (int)(_aluResult >> 32);
 			if(overflow != 0)
 				r31 = overflow;
 			// Put underflow into r31

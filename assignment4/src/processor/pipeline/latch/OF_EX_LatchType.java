@@ -9,6 +9,7 @@ public class OF_EX_LatchType {
 	int op2;
 	int pc;
 	int rd;
+	int r31;
 	int branchPC;
 	boolean isBubbled = false;
 	
