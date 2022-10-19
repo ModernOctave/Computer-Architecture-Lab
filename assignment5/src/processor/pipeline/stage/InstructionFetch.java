@@ -31,44 +31,33 @@ public class InstructionFetch {
 			if(!IF_EnableLatch.isBubbled())
 			{
 				// Update PC
-				if(!IF_EnableLatch.isStalled())
+				if(containingProcessor.getIsBranchTaken())
 				{
-					if(containingProcessor.getIsBranchTaken())
-					{
-						containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
-						containingProcessor.setIsBranchTaken(false);
-						if(Simulator.isDebugMode())
-						{
-							System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
-						}
-					}
-
+					containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getBranchPC());
+					containingProcessor.setIsBranchTaken(false);
 					if(Simulator.isDebugMode())
 					{
-						System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
-					}
-
-					// IF stage
-					int PC = containingProcessor.getRegisterFile().getProgramCounter();
-					IF_OF_Latch.setPc(PC);
-					int instruction = containingProcessor.getMainMemory().getWord(PC);
-					IF_OF_Latch.setInstruction(instruction);
-
-					Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
-
-					containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
-					if(Simulator.isDebugMode())
-					{
-						System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
+						System.out.println("[Debug] (IF) Branch taken, PC updated to " + containingProcessor.getBranchPC());
 					}
 				}
-				else
+
+				if(Simulator.isDebugMode())
 				{
-					IF_EnableLatch.setIsStalled(false);
-					if(Simulator.isDebugMode())
-					{
-						System.out.println("[Debug] (IF) Stalled instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
-					}
+					System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
+				}
+
+				// IF stage
+				int PC = containingProcessor.getRegisterFile().getProgramCounter();
+				IF_OF_Latch.setPc(PC);
+				int instruction = containingProcessor.getMainMemory().getWord(PC);
+				IF_OF_Latch.setInstruction(instruction);
+
+				Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);
+
+				containingProcessor.getRegisterFile().setProgramCounter(containingProcessor.getRegisterFile().getProgramCounter() + 1);
+				if(Simulator.isDebugMode())
+				{
+					System.out.println("[Debug] (IF) PC incremented to " + containingProcessor.getRegisterFile().getProgramCounter());
 				}
 			}
 				

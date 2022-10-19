@@ -23,6 +23,10 @@ public class OperandFetch {
 	{
 		if(IF_OF_Latch.isOF_enable())
 		{
+
+			// Pass the bubble to the next latch
+			containingProcessor.getOF_EX_Latch().setIsBubbled(IF_OF_Latch.isBubbled());
+			
 			if (!IF_OF_Latch.isBubbled())
 			{
 				String binaryInstruction = Integer.toBinaryString(IF_OF_Latch.getInstruction());
@@ -248,10 +252,14 @@ public class OperandFetch {
 				if(stall)
 				{
 					// Set stall
-					containingProcessor.getIF_EnableLatch().setIsStalled(true);
+					containingProcessor.getIF_EnableLatch().setIF_enable(false);
 					// Set bubble in latch
-					IF_OF_Latch.setIsBubbled(true);
+					OF_EX_Latch.setIsBubbled(true);
 					Statistics.setNumberOfStalls(Statistics.getNumberOfStalls() + 1);
+				}
+				else
+				{
+					containingProcessor.getIF_EnableLatch().setIF_enable(true);
 				}
 
 
@@ -269,14 +277,16 @@ public class OperandFetch {
 					System.out.println("[Debug] (OF) BranchPC: " + branchPC);
 
 				}
-			}
 
-			// Set EX_enable
-			OF_EX_Latch.setEX_enable(true);
-			IF_OF_Latch.setOF_enable(false);
-			
-			// Pass the bubble to the next latch
-			containingProcessor.getOF_EX_Latch().setIsBubbled(IF_OF_Latch.isBubbled());
+				OF_EX_Latch.setEX_enable(true);
+			}
+			else
+			{
+
+				// Set EX_enable
+				OF_EX_Latch.setEX_enable(true);
+				IF_OF_Latch.setOF_enable(false);
+			}
 		}
 	}
 }
