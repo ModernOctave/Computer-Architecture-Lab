@@ -8,8 +8,8 @@ public class OF_EX_LatchType {
 	int op1;
 	int op2;
 	int pc;
-	int rd;
-	int r31;
+	int rd = -1;
+	int r31 = -1;
 	int branchPC;
 	boolean isBubbled = false;
 	boolean isBusy = false;

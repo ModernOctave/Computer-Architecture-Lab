@@ -6,8 +6,8 @@ public class MA_RW_LatchType {
 	int ldResult;
 	int aluResult;
 	int opcode;
-	int rd ;
-	int r31;
+	int rd = -1;
+	int r31 = -1;
 	int pc;
 	boolean isBubbled = false;
 	

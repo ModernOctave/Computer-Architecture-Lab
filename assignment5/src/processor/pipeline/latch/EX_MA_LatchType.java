@@ -7,8 +7,8 @@ public class EX_MA_LatchType {
 	int aluResult;
 	int op1;
 	int opcode;
-	int rd;
-	int r31;
+	int rd = -1;
+	int r31 = -1;
 	boolean isBubbled = false;
 	boolean isBusy = false;
 	

@@ -2,7 +2,7 @@ package processor.pipeline.latch;
 
 public class RW_LatchType {
 
-	int rd;
+	int rd = -1;
 	boolean isBubbled = false;
 
 	public RW_LatchType()
