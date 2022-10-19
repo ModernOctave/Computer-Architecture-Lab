@@ -50,5 +50,18 @@ public class MainMemory implements Element {
 			// Add response event to the event queue
 			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this, event.getRequestingElement(), getWord(event.getAddressToReadFrom())));
 		}
+
+		// Handle Memory Write
+		else if (e.getEventType() == EventType.MemoryWrite)
+		{
+			// Get the memory request
+			MemoryWriteEvent event = (MemoryWriteEvent) e;
+			
+			// Write the word to memory
+			setWord(event.getAddressToWriteTo(), event.getValue());
+			
+			// Add response event to the event queue
+			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this, event.getRequestingElement(), -1));
+		}
 	}
 }
