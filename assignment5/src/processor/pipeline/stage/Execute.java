@@ -171,6 +171,7 @@ public class Execute {
 			}
 
 			EX_MA_Latch.setMA_enable(true);
+			OF_EX_Latch.setEX_enable(false);
 
 			// Pass on the bubble signal
 			EX_MA_Latch.setIsBubbled(OF_EX_Latch.isBubbled());

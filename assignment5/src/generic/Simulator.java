@@ -11,10 +11,11 @@ public class Simulator {
 	static Processor processor;
 	static boolean simulationComplete;
 	static boolean debugMode = true;
+	static EventQueue eventQueue = new EventQueue();
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
-		Simulator.processor = p;
+		processor = p;
 		loadProgram(assemblyProgramFile);
 		
 		simulationComplete = false;
@@ -70,6 +71,7 @@ public class Simulator {
 			}
 			processor.getMAUnit().performMA();
 			processor.getEXUnit().performEX();
+			eventQueue.processEvents();
 			processor.getOFUnit().performOF();
 			processor.getIFUnit().performIF();
 			Clock.incrementClock();
@@ -93,5 +95,9 @@ public class Simulator {
 
 	public static boolean isDebugMode() {
 		return debugMode;
+	}
+
+	public static EventQueue getEventQueue() {
+		return eventQueue;
 	}
 }

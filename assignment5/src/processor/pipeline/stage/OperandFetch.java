@@ -4,7 +4,6 @@ import generic.Misc;
 import generic.Simulator;
 import generic.Statistics;
 import processor.Processor;
-import processor.pipeline.latch.IF_EnableLatchType;
 import processor.pipeline.latch.IF_OF_LatchType;
 import processor.pipeline.latch.OF_EX_LatchType;
 
@@ -90,9 +89,6 @@ public class OperandFetch {
 					// R1I
 					rd = Integer.parseInt(binaryInstruction.substring(10, 15), 2);
 				}
-
-				// r31
-				int r31 = containingProcessor.getRegisterFile().getValue(31);
 				
 				// Set in latch
 				OF_EX_Latch.setOpcode(opcode);
@@ -277,6 +273,7 @@ public class OperandFetch {
 
 			// Set EX_enable
 			OF_EX_Latch.setEX_enable(true);
+			IF_OF_Latch.setOF_enable(false);
 			
 			// Pass the bubble to the next latch
 			containingProcessor.getOF_EX_Latch().setIsBubbled(IF_OF_Latch.isBubbled());

@@ -80,6 +80,7 @@ public class RegisterWrite {
 
 			RW_Latch.setRd(MA_RW_Latch.getRd());
 			RW_Latch.setIsBubbled(MA_RW_Latch.isBubbled());
+			MA_RW_Latch.setRW_enable(false);
 		}
 	}
 }
