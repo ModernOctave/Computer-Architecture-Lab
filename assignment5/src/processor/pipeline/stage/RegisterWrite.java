@@ -42,7 +42,6 @@ public class RegisterWrite {
 				if(opcode == 29)
 				{
 					Simulator.setSimulationComplete(true);
-					containingProcessor.getRegisterFile().setProgramCounter(MA_RW_Latch.getPc()+1);
 					if(Simulator.isDebugMode())
 					{
 						System.out.println("[Debug] (RW) End instruction detected");

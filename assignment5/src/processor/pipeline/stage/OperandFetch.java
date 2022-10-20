@@ -4,6 +4,7 @@ import generic.Misc;
 import generic.Simulator;
 import generic.Statistics;
 import processor.Processor;
+import processor.pipeline.latch.IF_EnableLatchType;
 import processor.pipeline.latch.IF_OF_LatchType;
 import processor.pipeline.latch.OF_EX_LatchType;
 
@@ -267,6 +268,16 @@ public class OperandFetch {
 
 					OF_EX_Latch.setEX_enable(true);
 					IF_OF_Latch.setOF_enable(false);
+				}
+
+				// Check if end
+				if (opcode == 29)
+				{
+					containingProcessor.getIF_EnableLatch().setIF_enable(false);
+					if(Simulator.isDebugMode())
+					{
+						System.out.println("[Debug] (OF) End detected, disabling IF");
+					}
 				}
 
 

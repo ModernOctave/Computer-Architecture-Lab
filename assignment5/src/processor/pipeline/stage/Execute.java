@@ -188,6 +188,7 @@ public class Execute implements Element {
 
 					// Bubble the pipeline
 					containingProcessor.getIF_OF_Latch().setIsBubbled(true);
+					Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() - 1);
 					containingProcessor.getIF_EnableLatch().setIsBubbled(true);
 
 					Statistics.setNumberOfIncorrectBranches(Statistics.getNumberOfIncorrectBranches() + 1);

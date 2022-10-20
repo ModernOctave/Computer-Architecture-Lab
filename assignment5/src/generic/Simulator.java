@@ -70,12 +70,8 @@ public class Simulator {
 			}
 
 			processor.getIF_EnableLatch().setIsBubbled(false);
-			
+
 			processor.getRWUnit().performRW();
-			if(simulationComplete == true)
-			{
-				break;
-			}
 			processor.getMAUnit().performMA();
 			processor.getEXUnit().performEX();
 			eventQueue.processEvents();
@@ -84,10 +80,7 @@ public class Simulator {
 			Clock.incrementClock();
 
 			// Update statistics
-			if(i%5 == 0)
-			{
-				Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
-			}
+			Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
 		}
 		
 		// Set statistics
