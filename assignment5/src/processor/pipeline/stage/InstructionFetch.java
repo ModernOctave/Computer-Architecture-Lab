@@ -19,6 +19,7 @@ public class InstructionFetch implements Element {
 	IF_EnableLatchType IF_EnableLatch;
 	IF_OF_LatchType IF_OF_Latch;
 	EX_IF_LatchType EX_IF_Latch;
+	int PC;
 	
 	public InstructionFetch(Processor containingProcessor, IF_EnableLatchType iF_EnableLatch, IF_OF_LatchType iF_OF_Latch, EX_IF_LatchType eX_IF_Latch)
 	{
@@ -49,8 +50,7 @@ public class InstructionFetch implements Element {
 					}
 				}
 				// IF stage
-				int PC = containingProcessor.getRegisterFile().getProgramCounter();
-				IF_OF_Latch.setPc(PC);
+				PC = containingProcessor.getRegisterFile().getProgramCounter();
 
 				if(Simulator.isDebugMode())
 				{
@@ -91,6 +91,7 @@ public class InstructionFetch implements Element {
 				MemoryReadResponseEvent event = (MemoryReadResponseEvent) e;
 				
 				int instruction = event.getValue();
+				IF_OF_Latch.setPc(PC);
 				IF_OF_Latch.setInstruction(instruction);
 
 				Statistics.setNumberOfDynamicInstructions(Statistics.getNumberOfDynamicInstructions() + 1);

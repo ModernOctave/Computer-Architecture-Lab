@@ -255,7 +255,7 @@ public class OperandFetch {
 				if(stall)
 				{
 					// Set stall
-					containingProcessor.getIF_EnableLatch().setIF_enable(false);
+					IF_OF_Latch.setIsBusy(true);
 					// Set bubble in latch
 					OF_EX_Latch.setIsBubbled(true);
 					Statistics.setNumberOfStalls(Statistics.getNumberOfStalls() + 1);
@@ -264,8 +264,6 @@ public class OperandFetch {
 				}
 				else
 				{
-					containingProcessor.getIF_EnableLatch().setIF_enable(true);
-
 					OF_EX_Latch.setEX_enable(true);
 					IF_OF_Latch.setOF_enable(false);
 				}
@@ -298,7 +296,6 @@ public class OperandFetch {
 			}
 			else
 			{
-
 				// Set EX_enable
 				OF_EX_Latch.setEX_enable(true);
 				IF_OF_Latch.setOF_enable(false);
