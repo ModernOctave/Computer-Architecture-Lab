@@ -53,14 +53,14 @@ public class MemoryAccess implements Element {
 				else if(opcode == 23)
 				{
 					// store
-					data = EX_MA_Latch.getOp1();
+					datas = EX_MA_Latch.getOp1();
 					address = EX_MA_Latch.getAluResult();
 					// containingProcessor.getMainMemory().setWord(address, data);
-					Event event = new MemoryWriteEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), address, data);
+					Event event = new MemoryWriteEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), address, datas);
 					Simulator.getEventQueue().addEvent(event);
 					if(Simulator.isDebugMode())
 					{
-						System.out.println("[Debug] (MA) Store request sent for address: " + address + " data: " + data);
+						System.out.println("[Debug] (MA) Store request sent for address: " + address + " data: " + datas);
 					}
 					EX_MA_Latch.setIsBusy(true);
 					// if(Simulator.isDebugMode())
@@ -94,21 +94,12 @@ public class MemoryAccess implements Element {
 	public void handleEvent(Event e) {
 		if(e.getEventType() == EventType.MemoryReadResponse)
 		{
-			MemoryReadResponseEvent event = (MemoryReadResponseEvent) e;
+			MemoryResponseEvent event = (MemoryResponseEvent) e;
 			int result = event.getValue();
 			MA_RW_Latch.setLdResult(result);
 			if(Simulator.isDebugMode())
 			{
 				System.out.println("[Debug] (MA) Load from address " + address + " data " + result);
-			}
-			EX_MA_Latch.setIsBusy(false);
-			MA_RW_Latch.setRW_enable(true);
-		}
-		else if(e.getEventType() == EventType.MemoryWriteResponse)
-		{
-			if(Simulator.isDebugMode())
-			{
-				System.out.println("[Debug] (MA) Store to address " + address + " data " + data);
 			}
 			EX_MA_Latch.setIsBusy(false);
 			MA_RW_Latch.setRW_enable(true);
