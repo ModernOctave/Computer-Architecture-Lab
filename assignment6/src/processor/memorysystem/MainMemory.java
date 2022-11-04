@@ -48,7 +48,7 @@ public class MainMemory implements Element {
 			MemoryReadEvent event = (MemoryReadEvent) e;
 			
 			// Add response event to the event queue
-			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this, event.getRequestingElement(), getWord(event.getAddressToReadFrom())));
+			Simulator.getEventQueue().addEvent(new MemoryReadResponseEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this, event.getRequestingElement(), getWord(event.getAddressToReadFrom())));
 		}
 
 		// Handle Memory Write
@@ -61,7 +61,7 @@ public class MainMemory implements Element {
 			setWord(event.getAddressToWriteTo(), event.getValue());
 			
 			// Add response event to the event queue
-			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this, event.getRequestingElement(), 0));
+			Simulator.getEventQueue().addEvent(new MemoryReadResponseEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this, event.getRequestingElement(), -1));
 		}
 	}
 }
