@@ -6,6 +6,9 @@ make:
 run: make
 	java -jar jars/simulator.jar src/configuration/config.xml stats.txt  test_cases/$(prog).out
 
+benchmark: make
+	java -jar jars/simulator.jar src/configuration/config.xml stats.txt  test_cases/$(prog).out
+
 zip:
 	rm -rf submissions
 	zip -FSr --quiet 200010036_200010037_$(name).zip src 200010036_200010037_$(name).pdf
