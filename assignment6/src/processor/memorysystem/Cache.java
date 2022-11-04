@@ -13,7 +13,7 @@ public class Cache implements Element {
     public Cache(Processor containingProcessor, int associativity, int numberOfLines, int latency) {
         this.numberOfLines = numberOfLines;
         this.latency = latency;
-        cacheLines = new CacheLine[associativity];
+        cacheLines = new CacheLine[numberOfLines];
         for (int i = 0; i < numberOfLines; i++) {
             cacheLines[i] = new CacheLine(associativity);
         }
