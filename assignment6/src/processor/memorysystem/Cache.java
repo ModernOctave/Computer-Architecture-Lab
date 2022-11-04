@@ -1,22 +1,28 @@
 package processor.memorysystem;
-import configuration.*;
 import generic.*;
 import generic.Event.EventType;
 import processor.Clock;
+import processor.Processor;
 
 public class Cache implements Element {
     CacheLine[] cacheLines;
-    int BlockSize;
     int numberOfLines;
     int latency;
+    Processor containingProcessor;
 
-    public Cache(int associativity, int numberOfLines, int BlockSize, int latency) {
-        this.BlockSize = BlockSize;
+    public Cache(Processor containingProcessor, int associativity, int numberOfLines, int latency) {
         this.numberOfLines = numberOfLines;
         this.latency = latency;
-        cacheLines = new CacheLine[associativity];
+        cacheLines = new CacheLine[numberOfLines];
         for (int i = 0; i < numberOfLines; i++) {
             cacheLines[i] = new CacheLine(associativity);
+        }
+        this.containingProcessor = containingProcessor;
+    }
+
+    public void incrementTSLA() {
+        for (int i = 0; i < numberOfLines; i++) {
+            cacheLines[i].incrementTSLA();
         }
     }
 
@@ -28,9 +34,19 @@ public class Cache implements Element {
 
         if (way != -1) {
             // Add response event to the event queue
-			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + latency, this, requestingElement, cacheLines[index].getData(way)));
+			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + latency, this, requestingElement, cacheLines[index].getData(way), address));
+
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Read hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + cacheLines[index].getData(way));
+			}
         } else {
-            handleCacheMiss(address);
+            // Fetch data from memory
+            Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address));
+            Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, requestingElement, containingProcessor.getMainMemory(), address));
+
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Read miss for address: " + address + " tag: " + tag + " index: " + index);
+			}
         }
     }
 
@@ -44,27 +60,35 @@ public class Cache implements Element {
             cacheLines[index].setData(way, data);
 			
 			// Add response event to the event queue
-			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + latency, this, requestingElement, 0));
+			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + latency, this, requestingElement, data, address));
+            Simulator.getEventQueue().addEvent(new MemoryWriteEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address, data));
+
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Write hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + data);
+			}
         } else {
-            handleCacheMiss(address);
+            // Fetch data from memory
+            Simulator.getEventQueue().addEvent(new MemoryWriteEvent(Clock.getCurrentTime() + latency, requestingElement, containingProcessor.getMainMemory(), address, data));
+            Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address));
+            
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Write miss for address: " + address + " tag: " + tag + " index: " + index);
+			}
         }
     }
 
-    public void handleCacheMiss(int address) {
-        // TODO
-        // 1. Read the block from main memory
-        // 2. Update the cache line
-        // 3. Update the TSLA
-
+    public void cacheInsert(int address, int data) {
         int tag = address / numberOfLines;
-
         int index = address % numberOfLines;
 
-        Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this, requestingElement, address));
+        int way = cacheLines[index].getLRUWay();
 
-        
+        cacheLines[index].setData(way, data);
+        cacheLines[index].setTag(way, tag);
 
-
+		if (Simulator.isDebugMode()) {
+			System.out.println("[Debug] (Cache) Inserting data: " + data + " for address: " + address + " tag: " + tag + " index: " + index + " way: " + way);
+		}
     }
 
     @Override
@@ -85,6 +109,15 @@ public class Cache implements Element {
             MemoryWriteEvent event = (MemoryWriteEvent) e;
             
             cacheWrite(event.getAddressToWriteTo(), event.getValue(), event.getRequestingElement());
+        }
+
+        // Handle Memory Response
+        if (e.getEventType() == EventType.MemoryResponse)
+        {
+            // Get the memory request
+            MemoryResponseEvent event = (MemoryResponseEvent) e;
+
+            cacheInsert(event.getAddress(), event.getValue());
         }
     }
 }

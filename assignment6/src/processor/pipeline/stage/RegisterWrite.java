@@ -62,7 +62,7 @@ public class RegisterWrite {
 					containingProcessor.getRegisterFile().setValue(rd, ldResult);
 					if(Simulator.isDebugMode())
 					{
-						System.out.println("[Debug] (RW) Write register " + rd + " to " + ldResult);
+						System.out.println("[Debug] (RW) Write to register " + rd + " data " + ldResult);
 					}
 				}
 

@@ -25,7 +25,7 @@ public class Execute implements Element {
 	
 	public void performEX()
 	{
-		OF_EX_Latch.setIsBusy(EX_MA_Latch.isBusy());
+		OF_EX_Latch.setIsWaiting(EX_MA_Latch.isBusy());
 
 		if(OF_EX_Latch.isEX_enable() && !OF_EX_Latch.isBusy() && !EX_MA_Latch.isBusy())
 		{
@@ -231,6 +231,11 @@ public class Execute implements Element {
 			{
 				OF_EX_Latch.setIsBusy(false);
 				EX_MA_Latch.setMA_enable(true);
+
+				if (Simulator.isDebugMode()) 
+				{
+					System.out.println("[Debug] (EX) Operation has completed execution.");
+				}
 			}
 		}
 	}

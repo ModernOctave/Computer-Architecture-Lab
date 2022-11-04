@@ -59,11 +59,8 @@ public class Simulator {
 		Statistics.setNumberOfDynamicInstructions(0);
 		Statistics.setNumberOfCycles(0);
 
-		int i = 0;
 		while(simulationComplete == false)
 		{
-			i++;
-
 			if(Simulator.isDebugMode()) 
 			{
 				System.out.println();
@@ -77,6 +74,7 @@ public class Simulator {
 			eventQueue.processEvents();
 			processor.getOFUnit().performOF();
 			processor.getIFUnit().performIF();
+			
 			Clock.incrementClock();
 
 			// Update statistics

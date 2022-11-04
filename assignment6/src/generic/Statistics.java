@@ -20,14 +20,15 @@ public class Statistics {
 		{
 			PrintWriter writer = new PrintWriter(statFile);
 			
-			writer.println("Number of static instructions executed = " + numberOfStaticInstructions);
-			writer.println("Number of dynamic instructions executed = " + numberOfDynamicInstructions);
-			writer.println("Number of cycles taken = " + numberOfCycles);
-			writer.println("IPC = " + IPC);
-			writer.println("Frequency = " + frequency + " GHz");
-			writer.println("Number of stalls = " + numberOfStalls);
-			writer.println("Number of incorrect branches = " + numberOfIncorrectBranches);
-			
+			// writer.println("Number of static instructions executed = " + numberOfStaticInstructions);
+			// writer.println("Number of dynamic instructions executed = " + numberOfDynamicInstructions);
+			// writer.println("Number of cycles taken = " + numberOfCycles);
+			// writer.println("IPC = " + IPC);
+			// writer.println("Frequency = " + frequency + " GHz");
+			// writer.println("Number of stalls = " + numberOfStalls);
+			// writer.println("Number of incorrect branches = " + numberOfIncorrectBranches);
+			writer.println(IPC);
+
 			writer.close();
 		}
 		catch(Exception e)

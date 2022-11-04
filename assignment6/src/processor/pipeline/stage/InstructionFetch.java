@@ -57,7 +57,7 @@ public class InstructionFetch implements Element {
 					System.out.println("[Debug] (IF) Fetching instruction from memory");
 				}
 				// Create MemoryReadEvent
-				Event event = new MemoryReadEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), PC);
+				Event event = new MemoryReadEvent(Clock.getCurrentTime(), this, containingProcessor.getL1iCache(), PC);
 				// Add event to the event queue
 				Simulator.getEventQueue().addEvent(event);
 
@@ -81,7 +81,7 @@ public class InstructionFetch implements Element {
 		}
 		else
 		{
-			if(e.getEventType() == Event.EventType.MemoryReadResponse)
+			if(e.getEventType() == Event.EventType.MemoryResponse)
 			{
 				if(Simulator.isDebugMode())
 				{

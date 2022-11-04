@@ -13,6 +13,7 @@ public class OF_EX_LatchType {
 	int branchPC;
 	boolean isBubbled = false;
 	boolean isBusy = false;
+	boolean isWaiting = false;
 	
 	public OF_EX_LatchType()
 	{
@@ -108,4 +109,11 @@ public class OF_EX_LatchType {
 		this.isBusy = isBusy;
 	}
 
+	public boolean isWaiting() {
+		return isWaiting;
+	}
+
+	public void setIsWaiting(boolean isWaiting) {
+		this.isWaiting = isWaiting;
+	}
 }
