@@ -4,7 +4,7 @@ package processor.pipeline.stage;
 import processor.Clock;
 import generic.Element;
 import generic.Event;
-import generic.MemoryReadResponseEvent;
+import generic.MemoryResponseEvent;
 import generic.Simulator;
 import generic.Statistics;
 import generic.*;
@@ -88,7 +88,7 @@ public class InstructionFetch implements Element {
 					System.out.println("[Debug] (IF) Instruction fetched from " + containingProcessor.getRegisterFile().getProgramCounter());
 				}
 
-				MemoryReadResponseEvent event = (MemoryReadResponseEvent) e;
+				MemoryResponseEvent event = (MemoryResponseEvent) e;
 				
 				int instruction = event.getValue();
 				IF_OF_Latch.setPc(PC);
