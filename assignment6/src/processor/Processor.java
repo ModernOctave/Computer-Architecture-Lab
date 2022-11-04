@@ -1,5 +1,8 @@
 package processor;
 
+import configuration.Configuration;
+
+import processor.memorysystem.Cache;
 import processor.memorysystem.MainMemory;
 import processor.memorysystem.RegisterFile;
 import processor.pipeline.latch.EX_IF_LatchType;
@@ -34,6 +37,9 @@ public class Processor {
 	MemoryAccess MAUnit;
 	RegisterWrite RWUnit;
 
+	Cache L1dCache;
+	Cache L1iCache;
+
 	// Control Signals
 	boolean isBranchTaken;
 	int branchPC;
@@ -56,6 +62,9 @@ public class Processor {
 		EXUnit = new Execute(this, OF_EX_Latch, EX_MA_Latch, EX_IF_Latch);
 		MAUnit = new MemoryAccess(this, EX_MA_Latch, MA_RW_Latch);
 		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch, RW_Latch);
+
+		L1dCache = new Cache(this, Configuration.L1d_associativity, Configuration.L1d_numberOfLines, Configuration.L1d_latency);
+		L1iCache = new Cache(this, Configuration.L1i_associativity, Configuration.L1i_numberOfLines, Configuration.L1i_latency);
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)
@@ -145,4 +154,11 @@ public class Processor {
 		return RW_Latch;
 	}
 
+	public Cache getL1dCache() {
+		return L1dCache;
+	}
+
+	public Cache getL1iCache() {
+		return L1iCache;
+	}
 }

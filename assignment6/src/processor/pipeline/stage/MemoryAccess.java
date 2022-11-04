@@ -53,14 +53,14 @@ public class MemoryAccess implements Element {
 				else if(opcode == 23)
 				{
 					// store
-					datas = EX_MA_Latch.getOp1();
+					data = EX_MA_Latch.getOp1();
 					address = EX_MA_Latch.getAluResult();
 					// containingProcessor.getMainMemory().setWord(address, data);
-					Event event = new MemoryWriteEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), address, datas);
+					Event event = new MemoryWriteEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), address, data);
 					Simulator.getEventQueue().addEvent(event);
 					if(Simulator.isDebugMode())
 					{
-						System.out.println("[Debug] (MA) Store request sent for address: " + address + " data: " + datas);
+						System.out.println("[Debug] (MA) Store request sent for address: " + address + " data: " + data);
 					}
 					EX_MA_Latch.setIsBusy(true);
 					// if(Simulator.isDebugMode())
@@ -92,7 +92,7 @@ public class MemoryAccess implements Element {
 
 	@Override
 	public void handleEvent(Event e) {
-		if(e.getEventType() == EventType.MemoryReadResponse)
+		if(e.getEventType() == EventType.MemoryResponse)
 		{
 			MemoryResponseEvent event = (MemoryResponseEvent) e;
 			int result = event.getValue();

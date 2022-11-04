@@ -81,7 +81,7 @@ public class InstructionFetch implements Element {
 		}
 		else
 		{
-			if(e.getEventType() == Event.EventType.MemoryReadResponse)
+			if(e.getEventType() == Event.EventType.MemoryResponse)
 			{
 				if(Simulator.isDebugMode())
 				{
