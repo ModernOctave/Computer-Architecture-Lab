@@ -35,10 +35,18 @@ public class Cache implements Element {
         if (way != -1) {
             // Add response event to the event queue
 			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + latency, this, requestingElement, cacheLines[index].getData(way), address));
+
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Read hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + cacheLines[index].getData(way));
+			}
         } else {
             // Fetch data from memory
             Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address));
             Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, requestingElement, containingProcessor.getMainMemory(), address));
+
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Read miss for address: " + address + " tag: " + tag + " index: " + index);
+			}
         }
     }
 
@@ -54,11 +62,18 @@ public class Cache implements Element {
 			// Add response event to the event queue
 			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + latency, this, requestingElement, data, address));
             Simulator.getEventQueue().addEvent(new MemoryWriteEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address, data));
+
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Write hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + data);
+			}
         } else {
             // Fetch data from memory
             Simulator.getEventQueue().addEvent(new MemoryWriteEvent(Clock.getCurrentTime() + latency, requestingElement, containingProcessor.getMainMemory(), address, data));
             Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address));
             
+			if (Simulator.isDebugMode()) {
+				System.out.println("[Debug] (Cache) Write miss for address: " + address + " tag: " + tag + " index: " + index);
+			}
         }
     }
 
@@ -70,6 +85,10 @@ public class Cache implements Element {
 
         cacheLines[index].setData(way, data);
         cacheLines[index].setTag(way, tag);
+
+		if (Simulator.isDebugMode()) {
+			System.out.println("[Debug] (Cache) Inserting data: " + data + " for address: " + address + " tag: " + tag + " index: " + index + " way: " + way);
+		}
     }
 
     @Override

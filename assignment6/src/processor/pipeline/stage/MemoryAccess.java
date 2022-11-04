@@ -37,7 +37,7 @@ public class MemoryAccess implements Element {
 					// load
 					address = EX_MA_Latch.getAluResult();
 					// int data = containingProcessor.getMainMemory().getWord(address);
-					Event event = new MemoryReadEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), address);
+					Event event = new MemoryReadEvent(Clock.getCurrentTime(), this, containingProcessor.getL1dCache(), address);
 					Simulator.getEventQueue().addEvent(event);
 					if(Simulator.isDebugMode())
 					{
@@ -56,7 +56,7 @@ public class MemoryAccess implements Element {
 					data = EX_MA_Latch.getOp1();
 					address = EX_MA_Latch.getAluResult();
 					// containingProcessor.getMainMemory().setWord(address, data);
-					Event event = new MemoryWriteEvent(Clock.getCurrentTime(), this, containingProcessor.getMainMemory(), address, data);
+					Event event = new MemoryWriteEvent(Clock.getCurrentTime(), this, containingProcessor.getL1dCache(), address, data);
 					Simulator.getEventQueue().addEvent(event);
 					if(Simulator.isDebugMode())
 					{

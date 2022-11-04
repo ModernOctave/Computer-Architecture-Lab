@@ -8,6 +8,7 @@ public class MemoryResponseEvent extends Event {
 	public MemoryResponseEvent(long eventTime, Element requestingElement, Element processingElement, int value, int address) {
 		super(eventTime, EventType.MemoryResponse, requestingElement, processingElement);
 		this.value = value;
+		this.address = address;
 	}
 	public int getValue() {
 		return value;
