@@ -7,7 +7,12 @@ run: make
 	java -jar jars/simulator.jar src/configuration/config.xml stats.txt  test_cases/$(prog).out
 
 benchmark: make
-	java -jar jars/simulator.jar src/configuration/config.xml stats.txt  test_cases/$(prog).out
+	java -jar jars/simulator.jar src/configuration/config.xml stats.txt  benchmarks/$(prog).out
+	
+cbench: compile benchmark
+
+compile:
+	java -jar ../assignment2/jars/assembler.jar benchmarks/$(prog).asm benchmarks/$(prog).out
 
 zip:
 	rm -rf submissions

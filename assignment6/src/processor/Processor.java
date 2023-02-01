@@ -63,8 +63,8 @@ public class Processor {
 		MAUnit = new MemoryAccess(this, EX_MA_Latch, MA_RW_Latch);
 		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch, RW_Latch);
 
-		L1dCache = new Cache(this, Configuration.L1d_associativity, Configuration.L1d_numberOfLines, Configuration.L1d_latency);
-		L1iCache = new Cache(this, Configuration.L1i_associativity, Configuration.L1i_numberOfLines, Configuration.L1i_latency);
+		L1dCache = new Cache(this, "L1dCache", Configuration.L1d_associativity, Configuration.L1d_numberOfLines, Configuration.L1d_latency);
+		L1iCache = new Cache(this, "L1iCache", Configuration.L1i_associativity, Configuration.L1i_numberOfLines, Configuration.L1i_latency);
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)

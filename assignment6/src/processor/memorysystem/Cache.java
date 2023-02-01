@@ -9,10 +9,12 @@ public class Cache implements Element {
     int numberOfLines;
     int latency;
     Processor containingProcessor;
+	String name;
 
-    public Cache(Processor containingProcessor, int associativity, int numberOfLines, int latency) {
-        this.numberOfLines = numberOfLines;
+    public Cache(Processor containingProcessor, String name, int associativity, int numberOfLines, int latency) {
+        this.numberOfLines = numberOfLines/associativity;
         this.latency = latency;
+		this.name = name;
         cacheLines = new CacheLine[numberOfLines];
         for (int i = 0; i < numberOfLines; i++) {
             cacheLines[i] = new CacheLine(associativity);
@@ -37,7 +39,7 @@ public class Cache implements Element {
 			Simulator.getEventQueue().addEvent(new MemoryResponseEvent(Clock.getCurrentTime() + latency, this, requestingElement, cacheLines[index].getData(way), address));
 
 			if (Simulator.isDebugMode()) {
-				System.out.println("[Debug] (Cache) Read hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + cacheLines[index].getData(way));
+				System.out.println("[Debug] ("+name+") Read hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + cacheLines[index].getData(way));
 			}
         } else {
             // Fetch data from memory
@@ -45,7 +47,7 @@ public class Cache implements Element {
             Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, requestingElement, containingProcessor.getMainMemory(), address));
 
 			if (Simulator.isDebugMode()) {
-				System.out.println("[Debug] (Cache) Read miss for address: " + address + " tag: " + tag + " index: " + index);
+				System.out.println("[Debug] ("+name+") Read miss for address: " + address + " tag: " + tag + " index: " + index);
 			}
         }
     }
@@ -64,7 +66,7 @@ public class Cache implements Element {
             Simulator.getEventQueue().addEvent(new MemoryWriteEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address, data));
 
 			if (Simulator.isDebugMode()) {
-				System.out.println("[Debug] (Cache) Write hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + data);
+				System.out.println("[Debug] ("+name+") Write hit for address: " + address + " tag: " + tag + " index: " + index + " way: " + way + " data: " + data);
 			}
         } else {
             // Fetch data from memory
@@ -72,7 +74,7 @@ public class Cache implements Element {
             Simulator.getEventQueue().addEvent(new MemoryReadEvent(Clock.getCurrentTime() + latency, this, containingProcessor.getMainMemory(), address));
             
 			if (Simulator.isDebugMode()) {
-				System.out.println("[Debug] (Cache) Write miss for address: " + address + " tag: " + tag + " index: " + index);
+				System.out.println("[Debug] ("+name+") Write miss for address: " + address + " tag: " + tag + " index: " + index);
 			}
         }
     }
@@ -87,7 +89,7 @@ public class Cache implements Element {
         cacheLines[index].setTag(way, tag);
 
 		if (Simulator.isDebugMode()) {
-			System.out.println("[Debug] (Cache) Inserting data: " + data + " for address: " + address + " tag: " + tag + " index: " + index + " way: " + way);
+			System.out.println("[Debug] ("+name+") Inserting data: " + data + " for address: " + address + " tag: " + tag + " index: " + index + " way: " + way);
 		}
     }
 

@@ -76,6 +76,8 @@ public class Simulator {
 			processor.getIFUnit().performIF();
 			
 			Clock.incrementClock();
+			processor.getL1dCache().incrementTSLA();
+			processor.getL1iCache().incrementTSLA();
 
 			// Update statistics
 			Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
